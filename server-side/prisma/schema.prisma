@@ -1,0 +1,120 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                 Int      @id @unique @default(autoincrement())
+  username           String   @unique
+  verification_token String
+  reset_token        String
+  reset_time         DateTime
+  is_active          Boolean
+
+  deleted_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  user_leagues league_users[] @relation("users_league")
+}
+
+model league_types {
+  id   Int    @id @default(autoincrement())
+  type String
+
+  deleted_at DateTime
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  leagues leagues[]
+}
+
+model leagues {
+  id           Int    @id @default(autoincrement())
+  name         String
+  joining_code String @unique
+  type_id      Int
+  user_id      Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime
+
+  league_types   league_types     @relation(fields: [type_id], references: [id])
+  league_users   league_users[]   @relation("league_users")
+  teams          teams[]          @relation("league_teams")
+  league_matches league_matches[] @relation("league_matches")
+}
+
+model league_users {
+  id        Int @id @default(autoincrement())
+  user_id   Int
+  league_id Int
+
+  users   users   @relation("users_league", fields: [user_id], references: [id])
+  leagues leagues @relation("league_users", fields: [league_id], references: [id])
+}
+
+model teams {
+  id             Int    @id @default(autoincrement())
+  league_id      Int
+  team_name      String
+  matches_played Int
+  matches_won    Int
+  matches_lost   Int
+  goals_scored   Int
+  goals_conceded Int
+  points         Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime
+
+  league              leagues          @relation("league_teams", fields: [league_id], references: [id])
+  home_league_matches league_matches[] @relation("home_team")
+  away_league_matches league_matches[] @relation("away_team")
+}
+
+model match_types {
+  id   Int    @id @default(autoincrement())
+  type String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime
+}
+
+model league_matches {
+  id              Int     @id @default(autoincrement())
+  league_id       Int
+  match_type_id   Int
+  home_team_id    Int
+  away_team_id    Int
+  home_team_score Int
+  away_team_score Int
+  extra_time      Boolean
+  penalties       Boolean
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  deleted_at DateTime
+
+  league    leagues @relation("league_matches", fields: [league_id], references: [id])
+  home_team teams   @relation("home_team", fields: [home_team_id], references: [id])
+  away_team teams   @relation("away_team", fields: [away_team_id], references: [id])
+}
+
+model match_penalty_scores {
+  id       Int @id @default(autoincrement())
+  match_id Int
+}
