@@ -1,0 +1,37 @@
+import { type PrismaClient } from "@prisma/client/extension";
+
+const DEFAULT_ORDER_BY = {
+  created_at: "desc",
+};
+
+export default abstract class BaseRepository<T> {
+  constructor(protected modelClient: PrismaClient) {}
+  create(item: Record<string, any> = {}): Promise<T> {
+    return this.modelClient.create({ data: item });
+  }
+
+  getAll(options: Record<string, any> = {}): Promise<T[]> {
+    if (!options.orderBy) {
+      options.orderBy = DEFAULT_ORDER_BY;
+    }
+    return this.modelClient.findMany({ where: options });
+  }
+
+  getOne(condition: Record<string, any> = {}): Promise<T | null> {
+    return this.modelClient.findUnique({
+      where: condition,
+    });
+  }
+
+  getFirst(condition: Record<string, any> = {}): Promise<T | null> {
+    return this.modelClient.findFirst({ where: condition });
+  }
+
+  updateById(id: number, item: Record<string, any> = {}): Promise<number> {
+    return this.modelClient.update({ where: { id }, data: item });
+  }
+
+  deleteById(id: number): Promise<T> {
+    return this.modelClient.update({ where: { id }, data: { deleted_at: new Date() } });
+  }
+}

@@ -14,16 +14,17 @@ datasource db {
 }
 
 model users {
-  id                 Int      @id @unique @default(autoincrement())
-  username           String   @unique
+  id                 Int       @id @unique @default(autoincrement())
+  username           String    @unique
+  password           String
   verification_token String
-  reset_token        String
-  reset_time         DateTime
-  is_active          Boolean
+  reset_token        String?
+  reset_time         DateTime?
+  is_active          Boolean   @default(false)
 
-  deleted_at DateTime
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 
   user_leagues league_users[] @relation("users_league")
 }
@@ -32,9 +33,9 @@ model league_types {
   id   Int    @id @default(autoincrement())
   type String
 
-  deleted_at DateTime
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 
   leagues leagues[]
 }
@@ -46,14 +47,15 @@ model leagues {
   type_id      Int
   user_id      Int
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime? @default(now())
+  updated_at DateTime  @updatedAt
   deleted_at DateTime
 
-  league_types   league_types     @relation(fields: [type_id], references: [id])
-  league_users   league_users[]   @relation("league_users")
-  teams          teams[]          @relation("league_teams")
-  league_matches league_matches[] @relation("league_matches")
+  league_types     league_types     @relation(fields: [type_id], references: [id])
+  league_users     league_users[]   @relation("league_users")
+  teams            teams[]          @relation("league_teams")
+  league_matches   league_matches[] @relation("league_matches")
+  league_knockouts knockouts[]      @relation("league_knockouts")
 }
 
 model league_users {
@@ -69,45 +71,60 @@ model teams {
   id             Int    @id @default(autoincrement())
   league_id      Int
   team_name      String
-  matches_played Int
-  matches_won    Int
-  matches_lost   Int
-  goals_scored   Int
-  goals_conceded Int
-  points         Int
+  matches_played Int?
+  matches_won    Int?
+  matches_lost   Int?
+  goals_scored   Int?
+  goals_conceded Int?
+  points         Int?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  deleted_at DateTime
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 
   league              leagues          @relation("league_teams", fields: [league_id], references: [id])
   home_league_matches league_matches[] @relation("home_team")
   away_league_matches league_matches[] @relation("away_team")
+  knockout_teams      knockouts[]      @relation("knockout_teams")
+}
+
+model knockouts {
+  id              Int @id @default(autoincrement())
+  league_id       Int
+  team_id         Int
+  league_position Int
+
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+
+  league leagues @relation("league_knockouts", fields: [league_id], references: [id])
+  team   teams   @relation("knockout_teams", fields: [team_id], references: [id])
 }
 
 model match_types {
   id   Int    @id @default(autoincrement())
   type String
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  deleted_at DateTime
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 }
 
 model league_matches {
-  id              Int     @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   league_id       Int
   match_type_id   Int
   home_team_id    Int
   away_team_id    Int
-  home_team_score Int
-  away_team_score Int
-  extra_time      Boolean
-  penalties       Boolean
+  home_team_score Int?
+  away_team_score Int?
+  extra_time      Boolean?
+  penalties       Boolean?
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  deleted_at DateTime
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
 
   league    leagues @relation("league_matches", fields: [league_id], references: [id])
   home_team teams   @relation("home_team", fields: [home_team_id], references: [id])
