@@ -1,6 +1,7 @@
 import express, { Express } from "express";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
+import cors from "cors";
 
 import { logger } from "./utils/logger";
 import routes from "./routes/router";
@@ -10,6 +11,14 @@ const swaggerDoc = YAML.load("app.yaml");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 app.use(routes);
 

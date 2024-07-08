@@ -9,7 +9,6 @@ import { logger } from "../utils/logger";
 import { generalResponse } from "../helpers/responseHelper";
 import { checkExpiration } from "../helpers/checkExpiration";
 import { generateToken } from "../helpers/generateToken";
-import prisma from "../../prisma/script";
 
 const userRepository = new UserRepository();
 
@@ -37,10 +36,10 @@ export const register = async (req: Request, res: Response) => {
         if (expired) {
           await userRepository.deleteById(id);
         } else {
-          return generalResponse(res, 409, null, "conflict", "Username already exists");
+          return generalResponse(res, 409, null, "username", "Username already exists");
         }
       } else {
-        return generalResponse(res, 409, null, "conflict", "Username already exists");
+        return generalResponse(res, 409, null, "username", "Username already exists");
       }
     }
 
@@ -121,7 +120,9 @@ export const login = async (req: Request, res: Response) => {
 
     const { username, password } = req.body;
 
-    const isUser: users | null = await userRepository.getOne({ username: username });
+    const isUser: users | null = await userRepository.getFirst({
+      username: { equals: username, mode: "insensitive" },
+    });
     if (isUser === null) {
       return generalResponse(res, 403, null, "credentials", "Invalid Credentials");
     }
