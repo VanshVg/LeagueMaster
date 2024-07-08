@@ -9,6 +9,8 @@ module.exports = {
         primaryText: "#28183b",
         red: "#FF0000",
         link: "#1434a4",
+        lightBg: "#f2eeee",
+        skyBlue: "#d9f5ff",
       },
       fontFamily: {
         poppins: ["myFont", "poppins"],
