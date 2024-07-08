@@ -172,7 +172,6 @@ export const verify = async (req: Request, res: Response) => {
 
     return generalResponse(res, 200, { resetToken: resetToken }, "success", "Username is valid");
   } catch (error) {
-    console.log(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
   }
 };
