@@ -184,6 +184,18 @@ paths:
         - application/json
       responses:
         200:
-          description: "League created successfully"
+          description: "Fetched all league types successfully"
+        500:
+          description: "Internal Server Error"
+  /league/leagues:
+    get:
+      tags:
+        - League
+      summary: "Fetch all User Leagues"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "Fetched all user leagues successfully"
         500:
           description: "Internal Server Error"

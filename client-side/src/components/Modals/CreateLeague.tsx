@@ -5,6 +5,8 @@ import leagueSchema from "../../schema/leagueSchema";
 import axios from "axios";
 import { IError } from "../../types";
 import { SecondaryButton } from "../../Buttons/Buttons";
+import { useDispatch } from "react-redux";
+import { setUserLeagues } from "../../redux/reducers/leaguesReducer";
 
 type IModalProps = {
   isOpen: boolean;
@@ -25,9 +27,10 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
   const [createLeagueError, setCreateLeagueError] = useState<IError>({ type: "", message: "" });
   const [leagueTypes, setLeagueTypes] = useState<ILeagueTypes[]>();
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchAllTypes = async () => {
-      console.log(`${process.env.REACT_APP_BACKEND_URL}/league/types`);
       try {
         const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/league/types`, {
           withCredentials: true,
@@ -55,9 +58,11 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
           }
         );
         if (response.data.type === "success") {
+          dispatch(setUserLeagues(response.data.data));
           onRequestClose();
         }
       } catch (error: any) {
+        console.log(error);
         setCreateLeagueError({ type: error.response.data.type, message: error.response.data.type });
       }
     },

@@ -10,5 +10,6 @@ const auth = passport.authenticate("jwt", { session: false, failureRedirect: "/l
 
 router.post("/create", auth, leagueValidator, leagueController.createLeague);
 router.get("/types", auth, leagueController.getLeagueTypes);
+router.get("/leagues", auth, leagueController.getUserLeagues);
 
 export default router;

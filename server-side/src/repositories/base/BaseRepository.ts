@@ -10,11 +10,11 @@ export default abstract class BaseRepository<T> {
     return this.modelClient.create({ data: item });
   }
 
-  getAll(options: Record<string, any> = {}): Promise<T[]> {
+  getAll(conditions: Record<string, any> = {}, options: Record<string, any> = {}): Promise<T[]> {
     if (!options.orderBy) {
       options.orderBy = DEFAULT_ORDER_BY;
     }
-    return this.modelClient.findMany(options);
+    return this.modelClient.findMany({ where: conditions }, options);
   }
 
   getOne(condition: Record<string, any> = {}): Promise<T | null> {

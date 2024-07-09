@@ -4,11 +4,15 @@ import randomString from "randomstring";
 import { generalResponse } from "../helpers/responseHelper";
 import LeagueRepository from "../repositories/LeagueRepository";
 import { Result, ValidationError, validationResult } from "express-validator";
-import { league_types, users } from "@prisma/client";
+import { league_types, leagues, users } from "@prisma/client";
 import LeagueTypesRepository from "../repositories/LeagueTypesRepository";
+import { IUserLeagues } from "../repositories/interfaces";
+import UserRepository from "../repositories/UserRepository";
+import prisma from "../../prisma/script";
 
 const leagueRepository = new LeagueRepository();
 const leagueTypesRepository = new LeagueTypesRepository();
+const userRepository = new UserRepository();
 
 export const createLeague = async (req: Request, res: Response) => {
   try {
@@ -49,7 +53,17 @@ export const getLeagueTypes = async (req: Request, res: Response) => {
     const types: league_types[] = await leagueTypesRepository.getAll();
     return generalResponse(res, 200, types, "success", "Fetched all league types successfully");
   } catch (error) {
-    console.log(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};
+
+export const getUserLeagues = async (req: Request, res: Response) => {
+  try {
+    const userId = (req.user as users).id;
+    const leagues: IUserLeagues[] = await leagueRepository.getUserLeagues(userId);
+
+    return generalResponse(res, 200, leagues, "success", "Fetched all user leagues successfully");
+  } catch (error) {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
