@@ -167,12 +167,12 @@ const Login = () => {
             </span>
           </p>
           <p className="mt-[20px] text-secondary">
-            Already have an account?{" "}
+            New to league master?{" "}
             <span
               className="text-link hover:underline cursor-pointer"
-              onClick={() => navigate("/auth/login")}
+              onClick={() => navigate("/auth/register")}
             >
-              Login
+              Register
             </span>
           </p>
         </div>

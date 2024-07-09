@@ -11,12 +11,12 @@ schemes: [http]
 securityDefinitions:
   BearerToken:
     type: "apiKey"
-    name: "Authorization"
-    in: "header"
+    name: "token"
+    in: "cookies"
     scheme: "bearer"
     bearerFormat: "JWT"
 security:
-  -BearerToken: []
+  - BearerToken: []
 
 paths:
   /auth/register:
@@ -148,5 +148,42 @@ paths:
           description: "Invalid Payload"
         403:
           description: "Description1: User isn't authorised to access this page, Description2: Token is expired. Please register again."
+        500:
+          description: "Internal Server Error"
+  /league/create:
+    post:
+      tags:
+        - League
+      summary: "Create a League"
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueName
+          in: formData
+          description: Name of the league user want to create.
+          required: true
+          type: string
+        - name: type
+          in: formData
+          description: Type of the league
+          required: true
+          type: string
+      responses:
+        200:
+          description: "League created successfully"
+        500:
+          description: "Internal Server Error"
+  /league/types:
+    get:
+      tags:
+        - League
+      summary: "Fetch all League types"
+      produces:
+        - application/json
+      responses:
+        200:
+          description: "League created successfully"
         500:
           description: "Internal Server Error"

@@ -45,9 +45,9 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="font-poppins">
+    <>
       {isSidebarOpen ? (
-        <div className="h-screen duration-300 ease-out shadow-[1px_1px_1px_1px_gray] pt-[15px] pb-[110px] overflow-y-auto">
+        <div className="h-screen duration-300 ease-in shadow-[1px_1px_1px_1px_gray] w-[23%] pt-[15px] pb-[110px] overflow-y-auto font-poppins">
           <Link to={"/dashboard"}>
             <div
               className={`${
@@ -109,7 +109,7 @@ const Sidebar = () => {
           </div>
         </div>
       ) : (
-        <div className="h-screen duration-300 ease-in shadow-[1px_1px_1px_1px_gray] w-[33%] pt-[15px] overflow-y-auto">
+        <div className="h-screen duration-300 ease-in shadow-[1px_1px_1px_1px_gray] w-[7%] pt-[15px] overflow-y-auto font-poppins">
           <Link to={"/dashboard"}>
             <Tooltip title="Home">
               <div
@@ -173,7 +173,7 @@ const Sidebar = () => {
           </Tooltip>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

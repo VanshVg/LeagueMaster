@@ -2,6 +2,7 @@ import express, { Express } from "express";
 import swaggerUi from "swagger-ui-express";
 import YAML from "yamljs";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
 import { logger } from "./utils/logger";
 import routes from "./routes/router";
@@ -11,6 +12,7 @@ const swaggerDoc = YAML.load("app.yaml");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(
   cors({

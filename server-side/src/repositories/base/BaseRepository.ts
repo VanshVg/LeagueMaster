@@ -14,7 +14,7 @@ export default abstract class BaseRepository<T> {
     if (!options.orderBy) {
       options.orderBy = DEFAULT_ORDER_BY;
     }
-    return this.modelClient.findMany({ where: options });
+    return this.modelClient.findMany(options);
   }
 
   getOne(condition: Record<string, any> = {}): Promise<T | null> {

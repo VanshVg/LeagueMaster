@@ -8,12 +8,11 @@ const Dashboard = () => {
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
-      <div className="dashboard-container h-screen overflow-hidden">
+      <div className="h-screen overflow-hidden">
         <Navbar />
         <div className="flex h-screen">
-          <div className="w-[23%]">
-            <Sidebar />
-          </div>
+          <Sidebar />
+          <div className="w-[93%] mx-auto"></div>
         </div>
       </div>
     </div>

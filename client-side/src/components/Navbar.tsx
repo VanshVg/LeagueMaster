@@ -1,14 +1,19 @@
 import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../redux/reducers/sidebarReducer";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import CreateLeague from "./Modals/CreateLeague";
+import { useState } from "react";
 
 const Navbar = () => {
   const navbarDetails = {
     title: "League Master",
   };
 
+  const [isCreateLeagueOpen, setIsCreateLeagueOpen] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
 
   if (location.pathname.includes("auth") || location.pathname === "/") {
     return null;
@@ -16,6 +21,10 @@ const Navbar = () => {
 
   const handleSidebar = () => {
     dispatch(toggleSidebar());
+  };
+
+  const createLeagueHandler = (): void => {
+    setIsCreateLeagueOpen(true);
   };
 
   return (
@@ -28,12 +37,20 @@ const Navbar = () => {
           onClick={handleSidebar}
         />
         <img src="/icons/football.svg" alt="football" className="h-[45px] ml-[30px] mt-[8px]" />
-        <h1 className="text-primary font-semibold text-[35px] ml-[10px] mt-[5px] font-ss3">
+        <h1
+          className="text-primary font-semibold text-[35px] ml-[10px] mt-[5px] cursor-pointer font-ss3"
+          onClick={() => {
+            navigate("/dashboard");
+          }}
+        >
           {navbarDetails.title}
         </h1>
       </div>
       <div className="flex mt-[20px] gap-[20px]">
-        <div className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]">
+        <div
+          className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]"
+          onClick={createLeagueHandler}
+        >
           <img src="/icons/plus.svg" alt="create" className="h-[30px]" />
           <p className="text-primary text-[18px] ml-[5px] mt-[2px]">Create League</p>
         </div>
@@ -45,6 +62,10 @@ const Navbar = () => {
           <img src="/icons/profile.svg" alt="profile" className="h-[25px] mt-[5px]" />
           <p className="text-primary text-[18px] ml-[5px] mt-[3px]">Profile</p>
         </div>
+        <CreateLeague
+          isOpen={isCreateLeagueOpen}
+          onRequestClose={() => setIsCreateLeagueOpen(false)}
+        />
       </div>
     </div>
   );

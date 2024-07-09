@@ -4,7 +4,7 @@ type IAuthButtonProps = {
 
 export const PrimaryButton = ({ name }: IAuthButtonProps) => {
   return (
-    <div className="text-white border-[1px] border-white max-h-[50px] text-[18px] bg-primary rounded-[6px] p-[10px] w-[120px] duration-300 ease-out hover:bg-white hover:text-primary hover:border-primary cursor-pointer">
+    <div className="text-white border-[1px] border-white max-h-[50px] text-[18px] bg-primary rounded-[6px] p-[10px] px-[20px] min-w-[120px] max-w-[170px] text-center duration-300 ease-out hover:bg-white hover:text-primary hover:border-primary cursor-pointer">
       {name}
     </div>
   );
@@ -12,7 +12,7 @@ export const PrimaryButton = ({ name }: IAuthButtonProps) => {
 
 export const SecondaryButton = ({ name }: IAuthButtonProps) => {
   return (
-    <div className="text-primary border-[1px] border-primary max-h-[50px] text-[18px] bg-white rounded-[6px] p-[10px] w-[120px] duration-300 ease-out hover:bg-primary hover:text-white hover:border-white cursor-pointer">
+    <div className="text-primary border-[1px] border-primary max-h-[50px] text-[18px] bg-white rounded-[6px] p-[10px] px-[20px] min-w-[120px] max-w-[170px] duration-300 ease-out hover:bg-primary hover:text-white hover:border-white cursor-pointer">
       {name}
     </div>
   );

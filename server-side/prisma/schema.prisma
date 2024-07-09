@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum LeagueRole {
+  admin
+  user
+}
+
 model users {
   id                 Int       @id @unique @default(autoincrement())
   username           String    @unique
@@ -45,11 +50,10 @@ model leagues {
   name         String
   joining_code String @unique
   type_id      Int
-  user_id      Int
 
-  created_at DateTime? @default(now())
+  deleted_at DateTime?
+  created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
-  deleted_at DateTime
 
   league_types     league_types     @relation(fields: [type_id], references: [id])
   league_users     league_users[]   @relation("league_users")
@@ -59,9 +63,10 @@ model leagues {
 }
 
 model league_users {
-  id        Int @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   user_id   Int
   league_id Int
+  role      LeagueRole
 
   users   users   @relation("users_league", fields: [user_id], references: [id])
   leagues leagues @relation("league_users", fields: [league_id], references: [id])
