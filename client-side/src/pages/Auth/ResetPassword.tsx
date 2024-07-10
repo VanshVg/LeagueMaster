@@ -5,7 +5,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet";
 
 import { IError } from "../../types";
-import { SecondaryButton } from "../../Buttons/Buttons";
+import { SecondaryButton } from "../../components/Buttons/Buttons";
 import resetPasswordSchema from "../../schema/resetPasswordSchema";
 
 const ResetPassword = () => {

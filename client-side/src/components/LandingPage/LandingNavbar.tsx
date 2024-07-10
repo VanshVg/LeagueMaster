@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { PrimaryButton, SecondaryButton } from "../../Buttons/Buttons";
+import { PrimaryButton, SecondaryButton } from "../Buttons/Buttons";
 
 const LandingNavbar = ({ title }: { title: string }) => {
   const navigate = useNavigate();

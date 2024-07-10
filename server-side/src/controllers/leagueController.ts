@@ -7,12 +7,9 @@ import { Result, ValidationError, validationResult } from "express-validator";
 import { league_types, leagues, users } from "@prisma/client";
 import LeagueTypesRepository from "../repositories/LeagueTypesRepository";
 import { IUserLeagues } from "../repositories/interfaces";
-import UserRepository from "../repositories/UserRepository";
-import prisma from "../../prisma/script";
 
 const leagueRepository = new LeagueRepository();
 const leagueTypesRepository = new LeagueTypesRepository();
-const userRepository = new UserRepository();
 
 export const createLeague = async (req: Request, res: Response) => {
   try {
@@ -29,7 +26,7 @@ export const createLeague = async (req: Request, res: Response) => {
       charset: "alphanumeric",
     });
 
-    await leagueRepository.create({
+    const leagueData = await leagueRepository.create({
       name: leagueName,
       type_id: Number(type),
       joining_code: joiningCode,
@@ -42,7 +39,7 @@ export const createLeague = async (req: Request, res: Response) => {
         ],
       },
     });
-    return generalResponse(res, 200, null, "success", "League created successfully");
+    return generalResponse(res, 200, leagueData, "success", "League created successfully");
   } catch (error) {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }

@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import Cookies from "universal-cookie";
 
-import { SecondaryButton } from "../../Buttons/Buttons";
+import { SecondaryButton } from "../../components/Buttons/Buttons";
 import { IError } from "../../types";
 import loginSchema from "../../schema/loginSchema";
 

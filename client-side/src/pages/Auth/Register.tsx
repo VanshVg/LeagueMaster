@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import registerSchema from "../../schema/registerSchema";
-import { SecondaryButton } from "../../Buttons/Buttons";
+import { SecondaryButton } from "../../components/Buttons/Buttons";
 import { IError } from "../../types";
 
 const Register = () => {

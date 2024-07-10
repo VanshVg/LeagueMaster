@@ -7,8 +7,6 @@ import Activate from "./pages/Auth/Activate";
 import Login from "./pages/Auth/Login";
 import Verify from "./pages/Auth/Verify";
 import ResetPassword from "./pages/Auth/ResetPassword";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {

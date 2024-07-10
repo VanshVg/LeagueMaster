@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import axios from "axios";
 
-import { SecondaryButton } from "../../Buttons/Buttons";
+import { SecondaryButton } from "../../components/Buttons/Buttons";
 import { IError } from "../../types";
 import verifySchema from "../../schema/verifySchema";
 

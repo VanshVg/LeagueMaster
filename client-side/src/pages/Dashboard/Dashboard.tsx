@@ -1,28 +1,23 @@
 import { Helmet } from "react-helmet";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IError, IUserLeagues } from "../../types";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-
-interface IMatchTypes {
-  [x: number]: string;
-}
-
-const types: IMatchTypes = {
-  1: "League",
-  2: "Knockouts",
-  3: "League+Knockouts",
-  4: "Groups+Knockouts",
-};
+import LeagueCard from "../../components/Dashboard/LeagueCard";
+import { PrimaryButton } from "../../components/Buttons/Buttons";
+import CreateLeague from "../../components/Modals/CreateLeague";
 
 const Dashboard = () => {
   const [userLeagues, setUserLeagues] = useState<IUserLeagues[]>();
   const [userLeaguesError, setUserLeaguesError] = useState<IError>({ type: "", message: "" });
+  const [isCreateLeagueOpen, setIsCreateLeagueOpen] = useState<boolean>(false);
 
-  const newUserLeagues = useSelector((state: RootState) => state.userLeagues.userLeagues);
+  const dashboardDiv = useRef(null);
+
+  const newUserLeagues = useSelector((state: RootState) => state.userLeagues);
 
   const fetchUserLeagues = async () => {
     try {
@@ -39,10 +34,17 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchUserLeagues();
+    (dashboardDiv.current! as HTMLElement).scrollTop = (
+      dashboardDiv.current! as HTMLElement
+    ).scrollHeight;
   }, [newUserLeagues]);
-  console.log(userLeagues);
+
+  const createLeagueHandler = (): void => {
+    setIsCreateLeagueOpen(true);
+  };
+
   return (
-    <div className="h-screen font-poppins">
+    <div className="h-screen font-ss3">
       <Helmet>
         <title>Dashboard</title>
       </Helmet>
@@ -50,32 +52,35 @@ const Dashboard = () => {
         <Navbar />
         <div className="flex h-screen">
           <Sidebar />
-          <div className="w-[93%] mx-auto p-[20px] overflow-y-auto">
-            <div className="flex flex-wrap mt-[10px]">
-              {userLeagues &&
-                userLeagues.map((element: IUserLeagues, index: number) => {
-                  return (
-                    <div className="w-[calc(100%/2)] p-[20px]">
-                      <div className="border-[1px] border-[gray] rounded-[4px] hover:scale-110 duration-300 ease-in cursor-pointer hover:border-primary p-[10px]">
-                        <div>
-                          <h1 className="text-center text-primary font-semibold text-[25px] font-ss3">
-                            {element.name}
-                          </h1>
-                        </div>
-                        <p className="text-[gray] mt-[10px]">
-                          {types[element.type_id as keyof IMatchTypes]} Format
-                        </p>
-                        <div className="h-[1px] bg-secondary mt-[10px] max-w-[80%] mx-auto"></div>
-                        <div className="flex justify-between mx-auto text-primaryText mt-[15px] max-w-[80%] text-[15px]">
-                          <p>Total Teams: {element.teams.length}</p>
-                          <p>Total Matches: {element.league_matches.length}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
+          {userLeaguesError.type !== "" ? (
+            <p className="text-red mt-[10px]">{userLeaguesError.message}</p>
+          ) : (
+            <div className="w-[93%] mx-auto p-[20px] overflow-y-auto pb-[100px]" ref={dashboardDiv}>
+              {userLeagues && userLeagues.length > 0 ? (
+                <div className="flex flex-wrap mt-[10px]">
+                  {userLeagues &&
+                    userLeagues.map((element: IUserLeagues, index: number) => {
+                      return <LeagueCard league={element} key={index} />;
+                    })}
+                </div>
+              ) : (
+                <div>
+                  <img
+                    src="/images/addLeague_bg.png"
+                    className="mx-auto -mt-[70px]"
+                    alt="addLeagues"
+                  />
+                  <div className="text-[18px] inline-block" onClick={createLeagueHandler}>
+                    <PrimaryButton name="Create a League" />
+                  </div>
+                  <CreateLeague
+                    isOpen={isCreateLeagueOpen}
+                    onRequestClose={() => setIsCreateLeagueOpen(false)}
+                  />
+                </div>
+              )}
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import Modal from "react-modal";
 import leagueSchema from "../../schema/leagueSchema";
 import axios from "axios";
 import { IError } from "../../types";
-import { SecondaryButton } from "../../Buttons/Buttons";
+import { SecondaryButton } from "../Buttons/Buttons";
 import { useDispatch } from "react-redux";
 import { setUserLeagues } from "../../redux/reducers/leaguesReducer";
 
@@ -45,7 +45,7 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
     fetchAllTypes();
   }, []);
 
-  const { errors, values, touched, handleBlur, handleChange, submitForm } = useFormik({
+  const { errors, values, touched, handleBlur, handleChange, submitForm, resetForm } = useFormik({
     initialValues: initialData,
     validationSchema: leagueSchema,
     onSubmit: async (values) => {
@@ -59,10 +59,10 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
         );
         if (response.data.type === "success") {
           dispatch(setUserLeagues(response.data.data));
+          resetForm();
           onRequestClose();
         }
       } catch (error: any) {
-        console.log(error);
         setCreateLeagueError({ type: error.response.data.type, message: error.response.data.type });
       }
     },
@@ -82,6 +82,7 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
         isOpen={isOpen}
         onRequestClose={onRequestClose}
         contentLabel="Create a League"
+        ariaHideApp={false}
         className={
           "w-[50%] bg-white border-0 outline-0 mx-auto mt-[170px] shadow-[2px_2px_2px_2px_grey] rounded-[8px] pb-[30px] pt-[15px] px-[20px] font-ss3"
         }
@@ -173,11 +174,10 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
               ""
             )}
           </div>
-          <div
-            className="max-w-[77%] mt-[40px] mx-auto flex justify-center"
-            onClick={submitHandler}
-          >
-            <SecondaryButton name="Create a League" />
+          <div className="mt-[40px] max-w-[77%] mx-auto flex justify-center">
+            <div onClick={submitHandler} className="inline-block">
+              <SecondaryButton name="Create a League" />
+            </div>
           </div>
         </form>
       </Modal>
