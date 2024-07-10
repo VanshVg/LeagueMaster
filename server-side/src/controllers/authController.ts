@@ -18,7 +18,7 @@ export const register = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 404, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload");
     }
 
     const { username, password } = req.body;
@@ -63,7 +63,7 @@ export const register = async (req: Request, res: Response) => {
       "User registered successfully"
     );
   } catch (error) {
-    logger.info(error);
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
   }
 };
@@ -106,7 +106,7 @@ export const activateAccount = async (req: Request, res: Response) => {
     await userRepository.updateById(isUser.id, { is_active: true });
     return generalResponse(res, 200, null, "success", "Account activation successful");
   } catch (error) {
-    logger.info(error);
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
   }
 };
@@ -115,7 +115,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 404, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload");
     }
 
     const { username, password } = req.body;
@@ -138,6 +138,7 @@ export const login = async (req: Request, res: Response) => {
     const token: string = generateToken(username);
     return generalResponse(res, 200, { token: token }, "success", "User login successful");
   } catch (error) {
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
   }
 };
@@ -146,7 +147,7 @@ export const verify = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 404, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload");
     }
 
     const { username } = req.body;
@@ -172,6 +173,7 @@ export const verify = async (req: Request, res: Response) => {
 
     return generalResponse(res, 200, { resetToken: resetToken }, "success", "Username is valid");
   } catch (error) {
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
   }
 };
@@ -180,7 +182,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 404, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload");
     }
 
     const { token } = req.params;
@@ -219,6 +221,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
     return generalResponse(res, 200, null, "success", "Password reset successful");
   } catch (error) {
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
   }
 };

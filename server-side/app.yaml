@@ -199,3 +199,29 @@ paths:
           description: "Fetched all user leagues successfully"
         500:
           description: "Internal Server Error"
+  /league/join:
+    put:
+      tags:
+        - League
+      summary: "Join new league"
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueCode
+          in: formData
+          description: Code of the league user want to join.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Fetched all user leagues successfully"
+        400:
+          description: "Invalid Payload"
+        404:
+          description: "League code is invalid"
+        409:
+          description: "You're already part of this team"
+        500:
+          description: "Internal Server Error"

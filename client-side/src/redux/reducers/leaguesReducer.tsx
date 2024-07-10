@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IUserLeagues } from "../../types";
 
-const initialState = {
+const initialState: { userLeagues: IUserLeagues[] } = {
   userLeagues: [],
 };
 
@@ -9,7 +10,7 @@ const leagueSlice = createSlice({
   initialState,
   reducers: {
     setUserLeagues(state, action) {
-      state.userLeagues = action.payload;
+      state.userLeagues.push(action.payload);
     },
   },
 });

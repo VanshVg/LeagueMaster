@@ -63,7 +63,10 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
           onRequestClose();
         }
       } catch (error: any) {
-        setCreateLeagueError({ type: error.response.data.type, message: error.response.data.type });
+        setCreateLeagueError({
+          type: error.response.data.type,
+          message: error.response.data.message,
+        });
       }
     },
   });

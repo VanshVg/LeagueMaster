@@ -3,6 +3,7 @@ import { toggleSidebar } from "../redux/reducers/sidebarReducer";
 import { useLocation, useNavigate } from "react-router-dom";
 import CreateLeague from "./Modals/CreateLeague";
 import { useState } from "react";
+import JoinLeague from "./Modals/JoinLeague";
 
 const Navbar = () => {
   const navbarDetails = {
@@ -10,6 +11,7 @@ const Navbar = () => {
   };
 
   const [isCreateLeagueOpen, setIsCreateLeagueOpen] = useState<boolean>(false);
+  const [isJoinLeagueOpen, setIsJoinLeagueOpen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -25,6 +27,10 @@ const Navbar = () => {
 
   const createLeagueHandler = (): void => {
     setIsCreateLeagueOpen(true);
+  };
+
+  const joinLeagueHandler = (): void => {
+    setIsJoinLeagueOpen(true);
   };
 
   return (
@@ -54,7 +60,10 @@ const Navbar = () => {
           <img src="/icons/plus.svg" alt="create" className="h-[30px]" />
           <p className="text-primary text-[18px] ml-[5px] mt-[2px]">Create League</p>
         </div>
-        <div className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]">
+        <div
+          className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]"
+          onClick={joinLeagueHandler}
+        >
           <img src="/icons/door.svg" alt="join" className="h-[25px] mt-[5px]" />
           <p className="text-primary text-[18px] ml-[5px] mt-[3px]">Join League</p>
         </div>
@@ -66,6 +75,7 @@ const Navbar = () => {
           isOpen={isCreateLeagueOpen}
           onRequestClose={() => setIsCreateLeagueOpen(false)}
         />
+        <JoinLeague isOpen={isJoinLeagueOpen} onRequestClose={() => setIsJoinLeagueOpen(false)} />
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import randomString from "randomstring";
+import { Result, ValidationError, validationResult } from "express-validator";
+import { league_types, leagues, users } from "@prisma/client";
 
 import { generalResponse } from "../helpers/responseHelper";
 import LeagueRepository from "../repositories/LeagueRepository";
-import { Result, ValidationError, validationResult } from "express-validator";
-import { league_types, leagues, users } from "@prisma/client";
 import LeagueTypesRepository from "../repositories/LeagueTypesRepository";
 import { IUserLeagues } from "../repositories/interfaces";
+import { logger } from "../utils/logger";
 
 const leagueRepository = new LeagueRepository();
 const leagueTypesRepository = new LeagueTypesRepository();
@@ -15,7 +16,7 @@ export const createLeague = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 404, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload");
     }
 
     const { leagueName, type } = req.body;
@@ -41,6 +42,7 @@ export const createLeague = async (req: Request, res: Response) => {
     });
     return generalResponse(res, 200, leagueData, "success", "League created successfully");
   } catch (error) {
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
@@ -50,6 +52,7 @@ export const getLeagueTypes = async (req: Request, res: Response) => {
     const types: league_types[] = await leagueTypesRepository.getAll();
     return generalResponse(res, 200, types, "success", "Fetched all league types successfully");
   } catch (error) {
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
@@ -61,6 +64,44 @@ export const getUserLeagues = async (req: Request, res: Response) => {
 
     return generalResponse(res, 200, leagues, "success", "Fetched all user leagues successfully");
   } catch (error) {
+    logger.error(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};
+
+export const joinLeague = async (req: Request, res: Response) => {
+  try {
+    const errors: Result<ValidationError> = validationResult(req);
+    if (!errors.isEmpty()) {
+      return generalResponse(res, 400, null, "payload", "Invalid Payload");
+    }
+
+    const { leagueCode } = req.body;
+    const userId = (req.user as users).id;
+    const league: leagues | null = await leagueRepository.getOne({ joining_code: leagueCode });
+    if (league === null) {
+      return generalResponse(res, 404, null, "not_found", "League code is invalid");
+    }
+
+    const userLeague: IUserLeagues | null = await leagueRepository.getOneUserLeague(
+      userId,
+      league.id
+    );
+    if (userLeague !== null) {
+      return generalResponse(res, 409, null, "conflict", "You're already part of this team");
+    }
+
+    const addUser = await leagueRepository.updateById(league.id, {
+      league_users: {
+        create: {
+          user_id: userId,
+          role: "user",
+        },
+      },
+    });
+    return generalResponse(res, 200, addUser, "success", "Joined league successfully");
+  } catch (error) {
+    logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
