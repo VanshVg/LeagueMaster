@@ -2,15 +2,12 @@ import express, { Router } from "express";
 
 import * as leagueController from "../controllers/leagueController";
 import { joinLeagueValidator, leagueValidator } from "../validators/LeagueValidators";
-import passport from "passport";
 
 const router: Router = express.Router();
 
-const auth = passport.authenticate("jwt", { session: false, failureRedirect: "/login" });
-
-router.post("/create", auth, leagueValidator, leagueController.createLeague);
-router.get("/types", auth, leagueController.getLeagueTypes);
-router.get("/leagues", auth, leagueController.getUserLeagues);
-router.put("/join", auth, joinLeagueValidator, leagueController.joinLeague);
+router.post("/create", leagueValidator, leagueController.createLeague);
+router.get("/types", leagueController.getLeagueTypes);
+router.get("/leagues", leagueController.getUserLeagues);
+router.put("/join", joinLeagueValidator, leagueController.joinLeague);
 
 export default router;

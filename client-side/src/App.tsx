@@ -8,6 +8,7 @@ import Login from "./pages/Auth/Login";
 import Verify from "./pages/Auth/Verify";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Settings from "./pages/Dashboard/Settings";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/auth/verify" element={<Verify />} />
           <Route path="/auth/reset/:token" element={<ResetPassword />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </Router>
     </div>

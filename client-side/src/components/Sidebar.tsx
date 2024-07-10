@@ -152,17 +152,19 @@ const Sidebar = () => {
               </div>
             </Tooltip>
           </Link>
-          <Tooltip title="Settings">
-            <div
-              className={`${
-                location.pathname === "/settings"
-                  ? "mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex max-w-[95%] bg-skyBlue"
-                  : "mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
-              }`}
-            >
-              <img src="/icons/settings.svg" className="ml-[45px]" alt="settings" />
-            </div>
-          </Tooltip>
+          <Link to={"/settings"}>
+            <Tooltip title="Settings">
+              <div
+                className={`${
+                  location.pathname === "/settings"
+                    ? "mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex max-w-[95%] bg-skyBlue"
+                    : "mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
+                }`}
+              >
+                <img src="/icons/settings.svg" className="ml-[45px]" alt="settings" />
+              </div>
+            </Tooltip>
+          </Link>
           <Tooltip title="Logout">
             <div
               className="mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"

@@ -10,7 +10,7 @@ config();
 
 const cookieExtractor = (req: Request): string => {
   let token: string = "";
-  if (req && req.cookies) {
+  if (JSON.stringify(req.cookies) !== "{}" || req.headers.token !== undefined) {
     token = req.cookies.token || (req.headers.token as string).split(",")[0];
   }
   return token;

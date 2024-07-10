@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Modal from "react-modal";
-import leagueSchema from "../../schema/leagueSchema";
 import axios from "axios";
 import { IError } from "../../types";
 import { SecondaryButton } from "../Buttons/Buttons";
@@ -12,11 +11,6 @@ import joinLeagueSchema from "../../schema/joinLeagueSchema";
 type IModalProps = {
   isOpen: boolean;
   onRequestClose: () => void;
-};
-
-type ILeagueTypes = {
-  id: number;
-  type: string;
 };
 
 const JoinLeague = ({ isOpen, onRequestClose }: IModalProps) => {
