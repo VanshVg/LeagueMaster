@@ -45,31 +45,39 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
     fetchAllTypes();
   }, []);
 
-  const { errors, values, touched, handleBlur, handleChange, submitForm, resetForm } = useFormik({
-    initialValues: initialData,
-    validationSchema: leagueSchema,
-    onSubmit: async (values) => {
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/league/create`,
-          values,
-          {
-            withCredentials: true,
+  const { errors, values, touched, handleBlur, handleChange, submitForm, resetForm, setErrors } =
+    useFormik({
+      initialValues: initialData,
+      validationSchema: leagueSchema,
+      onSubmit: async (values) => {
+        try {
+          const response = await axios.post(
+            `${process.env.REACT_APP_BACKEND_URL}/league/create`,
+            values,
+            {
+              withCredentials: true,
+            }
+          );
+          if (response.data.type === "success") {
+            dispatch(setUserLeagues(response.data.data));
+            resetForm();
+            onRequestClose();
           }
-        );
-        if (response.data.type === "success") {
-          dispatch(setUserLeagues(response.data.data));
-          resetForm();
-          onRequestClose();
+        } catch (error: any) {
+          setCreateLeagueError({
+            type: error.response.data.type,
+            message: error.response.data.message,
+          });
         }
-      } catch (error: any) {
-        setCreateLeagueError({
-          type: error.response.data.type,
-          message: error.response.data.message,
-        });
-      }
-    },
-  });
+      },
+    });
+
+  const exitHandler = (): void => {
+    setCreateLeagueError({ type: "", message: "" });
+    setErrors({});
+    resetForm();
+    onRequestClose();
+  };
 
   const handleInputChange = (e: ChangeEvent): void => {
     handleChange(e);
@@ -83,7 +91,7 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
     <div className="font-poppins">
       <Modal
         isOpen={isOpen}
-        onRequestClose={onRequestClose}
+        onRequestClose={exitHandler}
         contentLabel="Create a League"
         ariaHideApp={false}
         className={
@@ -93,7 +101,7 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
         <img
           src="/icons/close.svg"
           className="flex ml-auto cursor-pointer"
-          onClick={onRequestClose}
+          onClick={exitHandler}
           alt=""
         ></img>
         <form>

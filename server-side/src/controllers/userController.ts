@@ -105,3 +105,24 @@ export const updatePassword = async (req: Request, res: Response) => {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
+
+export const deleteAccount = async (req: Request, res: Response) => {
+  try {
+    const { currentPassword } = req.body;
+    const userId = (req.user as users).id;
+    const user: users | null = await userRepository.getOne({ id: userId });
+    if (user === null) {
+      return generalResponse(res, 401, null, "unauthorised", "User isn't authorised");
+    }
+
+    if (!(await argon2.verify(user.password, currentPassword))) {
+      return generalResponse(res, 401, null, "invalid", "Invalid password");
+    }
+
+    await userRepository.updateById(user.id, { is_active: false, deleted_at: new Date() });
+    return generalResponse(res, 200, null, "success", "User deleted successfully");
+  } catch (error) {
+    logger.error(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};

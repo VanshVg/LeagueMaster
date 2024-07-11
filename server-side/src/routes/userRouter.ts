@@ -8,5 +8,6 @@ const router: Router = express.Router();
 router.get("/profile", userController.getProfile);
 router.put("/username", updateUsernameValidator, userController.updateUsername);
 router.put("/password", updatePasswordValidator, userController.updatePassword);
+router.put("/", userController.deleteAccount);
 
 export default router;

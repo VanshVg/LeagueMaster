@@ -296,3 +296,16 @@ paths:
           description: "Username already exists"
         500:
           description: "Internal Server Error"
+
+  /user:
+    delete:
+      tags:
+        - User
+      summary: "Deletes user account"
+      responses:
+        200:
+          description: "User deleted successfully"
+        401:
+          description: "Description 1: User isn't authorised, Description 2: Invalid Password,"
+        500:
+          description: "Internal Server Error"
