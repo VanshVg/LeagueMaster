@@ -10,7 +10,7 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Settings from "./pages/Dashboard/Settings";
 
-function App() {
+const App = () => {
   return (
     <div className="App">
       <Router>
@@ -27,6 +27,6 @@ function App() {
       </Router>
     </div>
   );
-}
+};
 
 export default App;
