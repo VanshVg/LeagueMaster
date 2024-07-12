@@ -29,7 +29,11 @@ export const applyPassportStrategy = () => {
     passport.use(
       new Strategy(options, async (jwt_payload: JwtPayload, done: VerifiedCallback) => {
         const isUser: users | null = await prisma.users.findFirst({
-          where: { username: { equals: jwt_payload.data.username, mode: "insensitive" } },
+          where: {
+            username: { equals: jwt_payload.data.username, mode: "insensitive" },
+            is_active: true,
+            deleted_at: null,
+          },
         });
         if (isUser === null) {
           return done(null, false);

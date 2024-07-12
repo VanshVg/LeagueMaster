@@ -20,7 +20,7 @@ enum LeagueRole {
 
 model users {
   id                 Int       @id @unique @default(autoincrement())
-  username           String    @unique
+  username           String
   password           String
   verification_token String
   reset_token        String?

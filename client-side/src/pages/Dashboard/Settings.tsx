@@ -9,6 +9,9 @@ import { IError } from "../../types";
 import { useDispatch } from "react-redux";
 import { setProfile } from "../../redux/reducers/userReducer";
 import Account from "../../components/Settings/Account";
+import Swal from "sweetalert2";
+import Cookies, { Cookie } from "universal-cookie";
+import { useNavigate } from "react-router-dom";
 
 export interface IProfile {
   username: string;
@@ -28,6 +31,8 @@ const Settings = () => {
   };
 
   const dispatch = useDispatch();
+  const cookies: Cookie = new Cookies();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -47,6 +52,38 @@ const Settings = () => {
     };
     fetchProfile();
   }, []);
+
+  const logoutHandler = () => {
+    Swal.fire({
+      title: "Logout Confirmation",
+      text: "Are sure you want to logout?",
+      icon: "warning",
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+      confirmButtonColor: "#2554c7",
+      color: "#28183b",
+      showLoaderOnConfirm: true,
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          cookies.remove("token", { path: "/" });
+          Swal.fire({
+            title: "Logout Successful",
+            text: "Logout Successful",
+            icon: "success",
+            showConfirmButton: false,
+            timer: 2000,
+          }).then(() => {
+            navigate("/");
+          });
+        }
+      })
+      .catch(() => {
+        navigate("/*");
+      });
+  };
   return (
     <div className="h-screen">
       <Helmet>
@@ -82,6 +119,13 @@ const Settings = () => {
                 )}
               </div>
               {isAccountOpen && <Account />}
+            </div>
+            <div>
+              <div className="flex cursor-pointer w-[145px]" onClick={logoutHandler}>
+                <h2 className="text-[30px] text-left ml-[20px] mt-[20px] font-bold text-primaryText underline">
+                  Logout
+                </h2>
+              </div>
             </div>
           </div>
         </div>

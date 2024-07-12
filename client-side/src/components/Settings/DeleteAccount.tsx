@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useFormik } from "formik";
 import deleteAccountSchema from "../../schema/deleteAccountSchema";
 import { IError } from "../../types";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const DeleteAccount = () => {
   const initialData = {
@@ -18,35 +19,62 @@ const DeleteAccount = () => {
     setShowCurrentPassword(!showCurrentPassword);
   };
 
-  const { errors, values, handleBlur, handleChange, submitForm, resetForm } = useFormik({
+  const navigate = useNavigate();
+
+  const { errors, values, handleBlur, touched, handleChange, submitForm, resetForm } = useFormik({
     initialValues: initialData,
     validationSchema: deleteAccountSchema,
     onSubmit: async (values) => {
-      try {
-        const response = await axios.put(
-          `${process.env.REACT_APP_BACKEND_URL}/user`,
-          {},
-          { withCredentials: true }
-        );
-        if (response.data.type === "success") {
-          Swal.fire({
-            title: "Logout Successful",
-            text: "Logout Successful",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 2000,
-          }).then(() => {
-            resetForm();
-          });
+      Swal.fire({
+        title: "Delete Confirmation",
+        text: "Are sure you want to delete your account?",
+        icon: "warning",
+        showConfirmButton: true,
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes",
+        confirmButtonColor: "#2554c7",
+        color: "#28183b",
+        showLoaderOnConfirm: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const response = await axios.put(
+              `${process.env.REACT_APP_BACKEND_URL}/user/remove`,
+              values,
+              { withCredentials: true }
+            );
+            if (response.data.type === "success") {
+              Swal.fire({
+                title: "Logout Successful",
+                text: "Logout Successful",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 2000,
+              }).then(() => {
+                navigate("/");
+              });
+            }
+          } catch (error: any) {
+            setDeleteAccountError({
+              type: error.response.data.type,
+              message: error.response.data.message,
+            });
+          }
         }
-      } catch (error: any) {
-        setDeleteAccountError({
-          type: error.response.data.type,
-          message: error.response.data.message,
-        });
-      }
+      });
     },
   });
+
+  const handleInputChange = (e: ChangeEvent): void => {
+    setDeleteAccountError({ type: "", message: "" });
+    handleChange(e);
+  };
+
+  const deleteAccountHandler = (): void => {
+    submitForm();
+  };
+
   return (
     <div>
       <div className="flex max-w-[70%] rounded-[0.438rem]">
@@ -65,9 +93,9 @@ const DeleteAccount = () => {
                         className="block px-2.5 pb-2.5 pt-4 w-full h-[40px] text-sm text-primary bg-transparent rounded-lg border-[1px] border-primary appearance-none dark:text-primary focus:text-primary dark:border-primary dark:focus:border-primary focus:outline-none focus:ring-0 focus:border-primary peer mx-auto"
                         placeholder=""
                         autoComplete="off"
-                        // value={values.currentPassword}
-                        // onChange={handleInputChange}
-                        // onBlur={handleBlur}
+                        value={values.currentPassword}
+                        onChange={handleInputChange}
+                        onBlur={handleBlur}
                       />
                       <label
                         htmlFor="currentPassword"
@@ -93,18 +121,18 @@ const DeleteAccount = () => {
                     )}
                   </div>
                 </div>
-                {/* {(errors.currentPassword && touched.currentPassword) ||
-                updatePasswordError.type === "password" ? (
+                {(errors.currentPassword && touched.currentPassword) ||
+                deleteAccountError.type !== "" ? (
                   <p className="-mb-[12px] mt-[2px] text-left text-[15px] text-red ml-[2px]">
-                    {errors.currentPassword || updatePasswordError.message}
+                    {errors.currentPassword || deleteAccountError.message}
                   </p>
                 ) : (
                   ""
-                )} */}
+                )}
               </div>
             </form>
           </div>
-          <div className="inline-block mt-[35px]">
+          <div className="inline-block mt-[35px]" onClick={deleteAccountHandler}>
             <SecondaryButton name="Delete Account" />
           </div>
         </div>

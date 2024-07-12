@@ -23,7 +23,7 @@ export const register = async (req: Request, res: Response) => {
 
     const { username, password } = req.body;
 
-    const isUser: users | null = await userRepository.getOne({
+    const isUser: users | null = await userRepository.getFirst({
       username: username,
       deleted_at: null,
     });
@@ -74,6 +74,7 @@ export const activateAccount = async (req: Request, res: Response) => {
 
     const isUser: users | null = await userRepository.getFirst({
       verification_token: token,
+      is_active: true,
       deleted_at: null,
     });
     if (isUser === null) {
@@ -122,6 +123,8 @@ export const login = async (req: Request, res: Response) => {
 
     const isUser: users | null = await userRepository.getFirst({
       username: { equals: username, mode: "insensitive" },
+      is_active: true,
+      deleted_at: null,
     });
     if (isUser === null) {
       return generalResponse(res, 403, null, "credentials", "Invalid Credentials");
