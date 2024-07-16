@@ -60,3 +60,7 @@ export interface IUserLeagues extends ILeagues {
   league_matches: ILeagueMatches[];
   teams: ITeams[];
 }
+
+export interface ILeagueTypes {
+  [x: number]: string;
+}

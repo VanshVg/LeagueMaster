@@ -1,0 +1,18 @@
+td {
+  border: 1px solid #171717;
+  padding: 15px;
+}
+thead {
+  font-size: 18px;
+  font-weight: bold;
+  color: #171717;
+}
+
+thead td {
+  border: 1px solid #171717;
+  /* background-color: #d9f5ff; */
+}
+
+thead tr {
+  border: 1px solid #171717;
+}

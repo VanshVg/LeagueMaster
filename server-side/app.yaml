@@ -227,6 +227,27 @@ paths:
         500:
           description: "Internal Server Error"
 
+  /league/{leagueId}:
+    get:
+      tags:
+        - League
+      summary: "Get League"
+      produces:
+        - application/json
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league.
+          required: true
+          type: number
+      responses:
+        200:
+          description: "Fetched all league data successfully"
+        404:
+          description: "League not found"
+        500:
+          description: "Internal Server Error"
+
   /user/profile:
     get:
       tags:
@@ -298,7 +319,7 @@ paths:
           description: "Internal Server Error"
 
   /user:
-    delete:
+    put:
       tags:
         - User
       summary: "Deletes user account"

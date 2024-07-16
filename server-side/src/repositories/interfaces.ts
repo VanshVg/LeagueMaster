@@ -5,3 +5,9 @@ export interface IUserLeagues extends leagues {
   league_matches: league_matches[];
   teams: teams[];
 }
+
+export interface ILeague extends leagues {
+  league_users: league_users[];
+  league_matches: league_matches[];
+  teams: teams[];
+}

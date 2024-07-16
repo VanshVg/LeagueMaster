@@ -18,6 +18,12 @@ enum LeagueRole {
   user
 }
 
+enum LeagueStatus {
+  pending
+  inprogress
+  completed
+}
+
 model users {
   id                 Int       @id @unique @default(autoincrement())
   username           String
@@ -46,10 +52,11 @@ model league_types {
 }
 
 model leagues {
-  id           Int    @id @default(autoincrement())
+  id           Int          @id @default(autoincrement())
   name         String
-  joining_code String @unique
+  joining_code String       @unique
   type_id      Int
+  status       LeagueStatus @default(pending)
 
   deleted_at DateTime?
   created_at DateTime  @default(now())

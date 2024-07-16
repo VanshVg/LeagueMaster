@@ -105,3 +105,18 @@ export const joinLeague = async (req: Request, res: Response) => {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
+
+export const getOneLeague = async (req: Request, res: Response) => {
+  try {
+    const { leagueId } = req.params;
+    const league: leagues | null = await leagueRepository.getOneLeague(Number(leagueId));
+    if (league === null) {
+      return generalResponse(res, 404, null, "not_found", "League not found");
+    }
+
+    return generalResponse(res, 200, league, "success", "League data fetched successfully");
+  } catch (error) {
+    logger.error(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};

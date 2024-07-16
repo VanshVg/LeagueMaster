@@ -2,7 +2,7 @@ import { leagues } from "@prisma/client";
 
 import BaseRepository from "./base/BaseRepository";
 import prisma from "../../prisma/script";
-import { IUserLeagues } from "./interfaces";
+import { ILeague, IUserLeagues } from "./interfaces";
 
 export default class LeagueRepository extends BaseRepository<leagues> {
   constructor() {
@@ -22,6 +22,7 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         name: true,
         joining_code: true,
         type_id: true,
+        status: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
@@ -46,6 +47,29 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         name: true,
         joining_code: true,
         type_id: true,
+        status: true,
+        created_at: true,
+        updated_at: true,
+        deleted_at: true,
+        league_users: true,
+        league_matches: true,
+        teams: true,
+      },
+    });
+  }
+
+  async getOneLeague(league_id: number): Promise<ILeague | null> {
+    return await prisma.leagues.findFirst({
+      where: {
+        id: league_id,
+        deleted_at: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        joining_code: true,
+        type_id: true,
+        status: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
