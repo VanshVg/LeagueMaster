@@ -53,20 +53,25 @@ const Navbar = () => {
         </h1>
       </div>
       <div className="flex mt-[20px] gap-[20px]">
-        <div
-          className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]"
-          onClick={createLeagueHandler}
-        >
-          <img src="/icons/plus.svg" alt="create" className="h-[30px]" />
-          <p className="text-primary text-[18px] ml-[5px] mt-[2px]">Create League</p>
-        </div>
-        <div
-          className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]"
-          onClick={joinLeagueHandler}
-        >
-          <img src="/icons/door.svg" alt="join" className="h-[25px] mt-[5px]" />
-          <p className="text-primary text-[18px] ml-[5px] mt-[3px]">Join League</p>
-        </div>
+        {location.pathname === "/dashboard" && (
+          <div
+            className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]"
+            onClick={createLeagueHandler}
+          >
+            <img src="/icons/plus.svg" alt="create" className="h-[30px]" />
+            <p className="text-primary text-[18px] ml-[5px] mt-[2px]">Create League</p>
+          </div>
+        )}
+        {location.pathname === "/dashboard" && (
+          <div
+            className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]"
+            onClick={joinLeagueHandler}
+          >
+            <img src="/icons/door.svg" alt="join" className="h-[25px] mt-[5px]" />
+            <p className="text-primary text-[18px] ml-[5px] mt-[3px]">Join League</p>
+          </div>
+        )}
+
         <div className="flex duration-300 ease-out hover:bg-lightBg cursor-pointer rounded-[28px] pt-[5px] px-[10px]">
           <img src="/icons/profile.svg" alt="profile" className="h-[25px] mt-[5px]" />
           <p className="text-primary text-[18px] ml-[5px] mt-[3px]">Profile</p>

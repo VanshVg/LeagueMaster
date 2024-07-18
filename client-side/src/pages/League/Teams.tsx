@@ -2,21 +2,16 @@ import { Helmet } from "react-helmet";
 import LeagueNavbar from "../../components/League/LeagueNavbar";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IError, IUserLeagues } from "../../types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { PrimaryButton, SecondaryButton } from "../../components/Buttons/Buttons";
-import { FieldArray, FormikProvider, useFormik } from "formik";
+import AddTeams from "../../components/League/Teams/AddTeams";
 
 const Teams = () => {
   const [leagueError, setLeagueError] = useState<IError>({ type: "", message: "" });
   const [leagueData, setLeagueData] = useState<IUserLeagues>();
   const [showAddTeams, setShowAddTeams] = useState<boolean>(false);
-
-  const initialData = {
-    teamName: [""],
-  };
 
   const leagueId = useParams().leagueId;
 
@@ -42,19 +37,7 @@ const Teams = () => {
     fetchLeague();
   }, []);
 
-  const formik = useFormik({
-    initialValues: initialData,
-    onSubmit: () => {},
-  });
-
-  const { values, handleChange } = formik;
-
-  const inputChangeHandler = (e: ChangeEvent) => {
-    handleChange(e);
-  };
-
   const showAddTeamsHandler = (): void => {
-    values.teamName = [""];
     setShowAddTeams(!showAddTeams);
   };
 
@@ -92,52 +75,7 @@ const Teams = () => {
                       <img src="/icons/right-arrow-dark.svg" className="mt-[25px]" alt="opened" />
                     )}
                   </div>
-                  {showAddTeams && (
-                    <FormikProvider value={formik}>
-                      <form>
-                        <FieldArray
-                          name="teamName"
-                          render={(arrayHelpers) => {
-                            return (
-                              <div>
-                                {values.teamName.map((team, index) => {
-                                  return (
-                                    <div
-                                      key={index}
-                                      className="flex justify-center gap-[20px] mt-[15px]"
-                                    >
-                                      <div>
-                                        <input
-                                          type="text"
-                                          name={`teamName[${index}]`}
-                                          value={formik.values.teamName[index]}
-                                          onChange={inputChangeHandler}
-                                          placeholder={`Team${index + 1} Name`}
-                                          className="border-[1px] border-primary rounded-[3px] p-[5px]"
-                                        />
-                                      </div>
-                                      <p
-                                        className="mt-[5px] text-link hover:underline cursor-pointer"
-                                        onClick={() => arrayHelpers.remove(index)}
-                                      >
-                                        Remove Field
-                                      </p>
-                                    </div>
-                                  );
-                                })}
-                                <p
-                                  className="mt-[15px] inline-block text-link hover:underline cursor-pointer"
-                                  onClick={() => arrayHelpers.push("")}
-                                >
-                                  Add Field
-                                </p>
-                              </div>
-                            );
-                          }}
-                        />
-                      </form>
-                    </FormikProvider>
-                  )}
+                  {showAddTeams && <AddTeams />}
                 </div>
               )}
             </div>
