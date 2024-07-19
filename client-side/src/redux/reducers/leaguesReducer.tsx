@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { IUserLeagues } from "../../types";
+import { IUserLeagues } from "../../types/types";
 
 const initialState: { userLeagues: IUserLeagues[] } = {
   userLeagues: [],

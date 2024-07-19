@@ -5,7 +5,7 @@ import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import Profile from "../../components/Settings/Profile";
 import axios from "axios";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import { useDispatch } from "react-redux";
 import { setProfile } from "../../redux/reducers/userReducer";
 import Account from "../../components/Settings/Account";

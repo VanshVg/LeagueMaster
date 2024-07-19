@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import registerSchema from "../../schema/registerSchema";
 import { SecondaryButton } from "../../components/Buttons/Buttons";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 
 const Register = () => {
   const initialData = {

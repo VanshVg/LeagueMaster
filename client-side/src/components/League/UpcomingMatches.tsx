@@ -1,4 +1,4 @@
-import { ILeagueMatches } from "../../types";
+import { ILeagueMatches } from "../../types/types";
 import RecentMatchCard from "./RecentMatchCard";
 
 type IUpcomingMatchesProps = {

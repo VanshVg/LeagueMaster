@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import verifySchema from "../../schema/verifySchema";
 import { ChangeEvent, useEffect, useState } from "react";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";

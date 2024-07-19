@@ -5,7 +5,7 @@ import LeagueNavbar from "../../components/League/LeagueNavbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { IError, IUserLeagues } from "../../types";
+import { IError, IUserLeagues } from "../../types/types";
 
 import LeagueDetails from "../../components/League/LeagueDetails";
 import RecentMatches from "../../components/League/RecentMatches";
@@ -69,9 +69,6 @@ const League = () => {
                     {leagueData?.league_matches.length === 0 ? (
                       <div className=" mt-[25px]">
                         <p className="text-red">Matches haven't been generated yet...</p>
-                        <div className="inline-block mt-[10px]">
-                          <PrimaryButton name="Generate Matches" />
-                        </div>
                       </div>
                     ) : (
                       <div className="flex mt-[15px] gap-[10px]">

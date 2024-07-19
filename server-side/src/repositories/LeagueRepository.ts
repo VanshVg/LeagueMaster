@@ -2,7 +2,7 @@ import { leagues } from "@prisma/client";
 
 import BaseRepository from "./base/BaseRepository";
 import prisma from "../../prisma/script";
-import { ILeague, IUserLeagues } from "./interfaces";
+import { ILeague, ITeamsData, IUserLeagues } from "./interfaces";
 
 export default class LeagueRepository extends BaseRepository<leagues> {
   constructor() {
@@ -78,5 +78,9 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         teams: true,
       },
     });
+  }
+
+  async createTeams(teamsData: ITeamsData[]) {
+    return await prisma.teams.createMany({ data: teamsData });
   }
 }

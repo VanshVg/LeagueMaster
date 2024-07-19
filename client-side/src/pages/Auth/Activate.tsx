@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 

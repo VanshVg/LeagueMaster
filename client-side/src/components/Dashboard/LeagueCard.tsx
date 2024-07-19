@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ILeagueTypes, IUserLeagues } from "../../types";
+import { ILeagueTypes, IUserLeagues } from "../../types/types";
 
 const types: ILeagueTypes = {
   1: "League",

@@ -1,7 +1,7 @@
 import { Snackbar, Tooltip } from "@mui/material";
 import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { ILeagueTypes, IUserLeagues } from "../../types";
+import { ILeagueTypes, IUserLeagues } from "../../types/types";
 
 type ILeagueDetailsProps = {
   leagueData: IUserLeagues | undefined;

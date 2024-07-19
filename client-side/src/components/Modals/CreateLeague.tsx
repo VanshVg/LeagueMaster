@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Modal from "react-modal";
 import leagueSchema from "../../schema/leagueSchema";
 import axios from "axios";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useDispatch } from "react-redux";
 import { setUserLeagues } from "../../redux/reducers/leaguesReducer";

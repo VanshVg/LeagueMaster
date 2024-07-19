@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import { SecondaryButton } from "../../components/Buttons/Buttons";
 import resetPasswordSchema from "../../schema/resetPasswordSchema";
 

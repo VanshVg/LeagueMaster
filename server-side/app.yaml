@@ -248,6 +248,32 @@ paths:
         500:
           description: "Internal Server Error"
 
+  /league/teams/{leagueId}:
+    post:
+      tags:
+        - League
+      summary: "Create Teams"
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league in which teams to be created.
+          required: true
+          type: string
+        - name: [teamNames]
+          in: formData
+          description: Name of the teams user want to create.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "League created successfully"
+        500:
+          description: "Internal Server Error"
+
   /user/profile:
     get:
       tags:

@@ -11,3 +11,8 @@ export interface ILeague extends leagues {
   league_matches: league_matches[];
   teams: teams[];
 }
+
+export interface ITeamsData {
+  league_id: number;
+  team_name: string;
+}

@@ -10,5 +10,6 @@ router.get("/types", leagueController.getLeagueTypes);
 router.get("/leagues", leagueController.getUserLeagues);
 router.put("/join", joinLeagueValidator, leagueController.joinLeague);
 router.get("/:leagueId", leagueController.getOneLeague);
+router.post("/teams/:leagueId", leagueController.addTeams);
 
 export default router;

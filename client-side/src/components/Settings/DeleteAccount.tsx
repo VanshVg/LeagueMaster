@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useFormik } from "formik";
 import deleteAccountSchema from "../../schema/deleteAccountSchema";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";

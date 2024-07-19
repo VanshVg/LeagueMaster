@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { useEffect, useRef, useState } from "react";
-import { IError, IUserLeagues } from "../../types";
+import { IError, IUserLeagues } from "../../types/types";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";

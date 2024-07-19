@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { ChangeEvent, useState } from "react";
 import Modal from "react-modal";
 import axios from "axios";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useDispatch } from "react-redux";
 import { setUserLeagues } from "../../redux/reducers/leaguesReducer";

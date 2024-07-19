@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 import axios from "axios";
 
 import { SecondaryButton } from "../../components/Buttons/Buttons";
-import { IError } from "../../types";
+import { IError } from "../../types/types";
 import verifySchema from "../../schema/verifySchema";
 
 const Verify = () => {

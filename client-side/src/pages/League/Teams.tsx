@@ -3,19 +3,22 @@ import LeagueNavbar from "../../components/League/LeagueNavbar";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { useEffect, useState } from "react";
-import { IError, IUserLeagues } from "../../types";
+import { IError, IUserLeagues } from "../../types/types";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import AddTeams from "../../components/League/Teams/AddTeams";
+import ListTeams from "../../components/League/Teams/ListTeams";
 
 const Teams = () => {
   const [leagueError, setLeagueError] = useState<IError>({ type: "", message: "" });
   const [leagueData, setLeagueData] = useState<IUserLeagues>();
   const [showAddTeams, setShowAddTeams] = useState<boolean>(false);
+  const [newTeams, setNewTeams] = useState<boolean>(false);
 
   const leagueId = useParams().leagueId;
 
   useEffect(() => {
+    setShowAddTeams(false);
     const fetchLeague = async () => {
       try {
         const response = await axios.get(
@@ -35,7 +38,7 @@ const Teams = () => {
       }
     };
     fetchLeague();
-  }, []);
+  }, [newTeams]);
 
   const showAddTeamsHandler = (): void => {
     setShowAddTeams(!showAddTeams);
@@ -55,11 +58,6 @@ const Teams = () => {
             <div>
               <h1 className="text-[35px] text-primary">Teams</h1>
               <div className="h-[1px] bg-secondary w-[80%] mx-auto"></div>
-              {leagueData?.teams.length === 0 ? (
-                <p className="text-red mt-[8px]">No teams have been Added in the league...</p>
-              ) : (
-                ""
-              )}
               {leagueData?.league_matches.length === 0 && (
                 <div>
                   <div
@@ -75,8 +73,19 @@ const Teams = () => {
                       <img src="/icons/right-arrow-dark.svg" className="mt-[25px]" alt="opened" />
                     )}
                   </div>
-                  {showAddTeams && <AddTeams />}
+                  {showAddTeams && (
+                    <AddTeams
+                      setNewTeams={() => {
+                        setNewTeams(!newTeams);
+                      }}
+                    />
+                  )}
                 </div>
+              )}
+              {leagueData?.teams.length === 0 ? (
+                <p className="text-red mt-[8px]">No teams have been Added in the league...</p>
+              ) : (
+                <ListTeams teams={leagueData?.teams} />
               )}
             </div>
           </div>
