@@ -35,9 +35,21 @@ export interface ILeagueMatches {
   away_team_score: number | null;
   extra_time: boolean | null;
   penalties: boolean | null;
+  match_number: number;
+  status: "pending" | "completed";
+  home_team: ITeams;
+  away_team: ITeams;
+  match_penalty_scores: IMatchPenalty;
   deleted_at: Date | null;
   created_at: Date;
   updated_at: Date;
+}
+
+export interface IMatchPenalty {
+  id: number;
+  match_id: number;
+  home_team_score: number;
+  away_team_score: number;
 }
 
 export interface ITeams {
@@ -61,6 +73,6 @@ export interface IUserLeagues extends ILeagues {
   teams: ITeams[];
 }
 
-export interface ILeagueTypes {
+export interface ITypes {
   [x: number]: string;
 }

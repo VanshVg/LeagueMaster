@@ -356,3 +356,28 @@ paths:
           description: "Description 1: User isn't authorised, Description 2: Invalid Password,"
         500:
           description: "Internal Server Error"
+
+  /matches/{leagueId}/generate:
+    put:
+      tags:
+        - Match
+      summary: "Generate league matches"
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Generated matches successfully"
+        404:
+          description: "League not found"
+        409:
+          description: "Not enough teams to start tournament"
+        500:
+          description: "Internal Server Error"

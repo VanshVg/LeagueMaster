@@ -1,13 +1,13 @@
 import { Snackbar, Tooltip } from "@mui/material";
 import { useState } from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { ILeagueTypes, IUserLeagues } from "../../types/types";
+import { ITypes, IUserLeagues } from "../../types/types";
 
 type ILeagueDetailsProps = {
   leagueData: IUserLeagues | undefined;
 };
 
-const types: ILeagueTypes = {
+const types: ITypes = {
   1: "League",
   2: "Knockouts",
   3: "League+Knockouts",
@@ -44,7 +44,7 @@ const LeagueDetails = ({ leagueData }: ILeagueDetailsProps) => {
         ></Snackbar>
       </div>
       <div>
-        <p>League Format: {types[leagueData?.type_id as keyof ILeagueTypes]}</p>
+        <p>League Format: {types[leagueData?.type_id as keyof ITypes]}</p>
       </div>
       <div>
         <p>Total Teams: {leagueData?.teams.length}</p>

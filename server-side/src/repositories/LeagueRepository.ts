@@ -27,7 +27,9 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         updated_at: true,
         deleted_at: true,
         league_users: true,
-        league_matches: true,
+        league_matches: {
+          orderBy: { match_number: "asc" },
+        },
         teams: true,
       },
     });
@@ -52,7 +54,9 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         updated_at: true,
         deleted_at: true,
         league_users: true,
-        league_matches: true,
+        league_matches: {
+          orderBy: { match_number: "asc" },
+        },
         teams: true,
       },
     });
@@ -74,7 +78,10 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         updated_at: true,
         deleted_at: true,
         league_users: true,
-        league_matches: true,
+        league_matches: {
+          include: { home_team: true, away_team: true, match_penalty_scores: true },
+          orderBy: { match_number: "asc" },
+        },
         teams: true,
       },
     });

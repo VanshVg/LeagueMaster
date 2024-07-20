@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { ILeagueTypes, IUserLeagues } from "../../types/types";
+import { ITypes, IUserLeagues } from "../../types/types";
 
-const types: ILeagueTypes = {
+const types: ITypes = {
   1: "League",
   2: "Knockouts",
   3: "League+Knockouts",
@@ -25,9 +25,7 @@ const LeagueCard = ({ league }: ILeagueCardProps) => {
             {league.name}
           </h1>
         </div>
-        <p className="text-[gray] mt-[10px]">
-          {types[league.type_id as keyof ILeagueTypes]} Format
-        </p>
+        <p className="text-[gray] mt-[10px]">{types[league.type_id as keyof ITypes]} Format</p>
         <div className="h-[1px] bg-secondary mt-[10px] max-w-[80%] mx-auto"></div>
         <div className="flex justify-between mx-auto text-primaryText mt-[15px] max-w-[80%] text-[15px]">
           <p>Total Teams: {league.teams.length}</p>

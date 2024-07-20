@@ -139,30 +139,3 @@ export const addTeams = async (req: Request, res: Response) => {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
-
-export const generateMatches = async (req: Request, res: Response) => {
-  try {
-    const { leagueId } = req.params;
-    const userId = (req.user as users).id;
-
-    const league: IUserLeagues | null = await leagueRepository.getOneUserLeague(
-      userId,
-      Number(leagueId)
-    );
-    if (league === null) {
-      return generalResponse(res, 404, null, "not_found", "League not found");
-    }
-
-    if (league.teams.length < 4) {
-      return generalResponse(res, 409, null, "conflict", "Not enough teams to start tournament");
-    }
-
-    const { teams } = league;
-
-    const totalMatches = teams.length * teams.length - 1;
-    const matchDays: number[] = [];
-  } catch (error) {
-    logger.error(error);
-    return generalResponse(res, 500, null, "server", "Internal Server Error");
-  }
-};

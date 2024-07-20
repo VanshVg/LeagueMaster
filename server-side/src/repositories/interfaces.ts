@@ -16,3 +16,11 @@ export interface ITeamsData {
   league_id: number;
   team_name: string;
 }
+
+export interface IMatchData {
+  league_id: number;
+  match_type_id: number;
+  home_team_id: number;
+  away_team_id: number;
+  match_number: number;
+}

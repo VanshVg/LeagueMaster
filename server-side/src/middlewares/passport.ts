@@ -5,21 +5,14 @@ import passport from "passport";
 import { JwtPayload } from "jsonwebtoken";
 import prisma from "../../prisma/script";
 import { users } from "@prisma/client";
+import { logger } from "../utils/logger";
+import { cookieExtractor } from "../helpers/cookieHelper";
 
 config();
 
-const cookieExtractor = (req: Request): string => {
-  let token: string = "";
-  if (JSON.stringify(req.cookies) !== "{}" || req.headers.token !== undefined) {
-    token = req.cookies.token || (req.headers.token as string).split(",")[0];
-  }
-  return token;
-};
-
 export const applyPassportStrategy = () => {
-  let jwt;
   try {
-    jwt = cookieExtractor;
+    let jwt = cookieExtractor;
 
     const options: StrategyOptions = {
       jwtFromRequest: jwt,
@@ -43,6 +36,7 @@ export const applyPassportStrategy = () => {
       })
     );
   } catch (error) {
+    logger.error(error);
     return null;
   }
 };

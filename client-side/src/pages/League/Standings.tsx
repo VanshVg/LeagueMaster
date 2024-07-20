@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import LeagueNavbar from "../../components/League/LeagueNavbar";
-import PointsTable from "../../components/League/PointsTable";
+import PointsTable from "../../components/League/Standings/PointsTable";
 
 const Standings = () => {
   return (

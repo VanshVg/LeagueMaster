@@ -6,8 +6,13 @@ const DEFAULT_ORDER_BY = {
 
 export default abstract class BaseRepository<T> {
   constructor(protected modelClient: PrismaClient) {}
+
   create(item: Record<string, any> = {}): Promise<T> {
     return this.modelClient.create({ data: item });
+  }
+
+  createMany(item: Record<string, any>[] = [{}]): Promise<{ count: number }> {
+    return this.modelClient.createMany({ data: item });
   }
 
   getAll(conditions: Record<string, any> = {}, options: Record<string, any> = {}): Promise<T[]> {

@@ -4,6 +4,7 @@ import passport from "passport";
 import authRoutes from "./authRouter";
 import leagueRoutes from "./leagueRouter";
 import userRoutes from "./userRouter";
+import matchRoutes from "./matchRouter";
 import { applyPassportStrategy } from "../middlewares/passport";
 
 applyPassportStrategy();
@@ -15,5 +16,6 @@ const router: Router = express.Router();
 router.use("/auth", authRoutes);
 router.use("/league", auth, leagueRoutes);
 router.use("/user", auth, userRoutes);
+router.use("/matches", auth, matchRoutes);
 
 export default router;

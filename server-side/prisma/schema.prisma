@@ -20,7 +20,13 @@ enum LeagueRole {
 
 enum LeagueStatus {
   pending
-  inprogress
+  league
+  knockout
+  completed
+}
+
+enum MatchStatus {
+  pending
   completed
 }
 
@@ -62,11 +68,10 @@ model leagues {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
 
-  league_types     league_types     @relation(fields: [type_id], references: [id])
-  league_users     league_users[]   @relation("league_users")
-  teams            teams[]          @relation("league_teams")
-  league_matches   league_matches[] @relation("league_matches")
-  league_knockouts knockouts[]      @relation("league_knockouts")
+  league_types   league_types     @relation(fields: [type_id], references: [id])
+  league_users   league_users[]   @relation("league_users")
+  teams          teams[]          @relation("league_teams")
+  league_matches league_matches[] @relation("league_matches")
 }
 
 model league_users {
@@ -97,21 +102,6 @@ model teams {
   league              leagues          @relation("league_teams", fields: [league_id], references: [id])
   home_league_matches league_matches[] @relation("home_team")
   away_league_matches league_matches[] @relation("away_team")
-  knockout_teams      knockouts[]      @relation("knockout_teams")
-}
-
-model knockouts {
-  id              Int @id @default(autoincrement())
-  league_id       Int
-  team_id         Int
-  league_position Int
-
-  deleted_at DateTime?
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-
-  league leagues @relation("league_knockouts", fields: [league_id], references: [id])
-  team   teams   @relation("knockout_teams", fields: [team_id], references: [id])
 }
 
 model match_types {
@@ -124,26 +114,33 @@ model match_types {
 }
 
 model league_matches {
-  id              Int      @id @default(autoincrement())
+  id              Int         @id @default(autoincrement())
   league_id       Int
   match_type_id   Int
+  match_number    Int?
   home_team_id    Int
   away_team_id    Int
   home_team_score Int?
   away_team_score Int?
   extra_time      Boolean?
   penalties       Boolean?
+  status          MatchStatus @default(pending)
 
   deleted_at DateTime?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
 
-  league    leagues @relation("league_matches", fields: [league_id], references: [id])
-  home_team teams   @relation("home_team", fields: [home_team_id], references: [id])
-  away_team teams   @relation("away_team", fields: [away_team_id], references: [id])
+  league               leagues                @relation("league_matches", fields: [league_id], references: [id])
+  home_team            teams                  @relation("home_team", fields: [home_team_id], references: [id])
+  away_team            teams                  @relation("away_team", fields: [away_team_id], references: [id])
+  match_penalty_scores match_penalty_scores[]
 }
 
 model match_penalty_scores {
-  id       Int @id @default(autoincrement())
-  match_id Int
+  id              Int @id @default(autoincrement())
+  match_id        Int
+  home_team_score Int
+  away_team_score Int
+
+  match_penalty league_matches @relation(fields: [match_id], references: [id])
 }
