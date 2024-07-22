@@ -6,5 +6,6 @@ const router: Router = express.Router();
 
 router.post("/:leagueId/generate", checkLeagueRole, matchController.generateMatches);
 router.get("/:leagueId", matchController.getMatches);
+router.put("/:leagueId/:matchId/result", checkLeagueRole, matchController.updateResult);
 
 export default router;

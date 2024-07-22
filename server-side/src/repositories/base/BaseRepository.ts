@@ -28,12 +28,12 @@ export default abstract class BaseRepository<T> {
     });
   }
 
-  getFirst(condition: Record<string, any> = {}): Promise<T | null> {
-    return this.modelClient.findFirst({ where: condition });
+  async getFirst(condition: Record<string, any> = {}): Promise<T | null> {
+    return await this.modelClient.findFirst({ where: condition });
   }
 
-  updateById(id: number, item: Record<string, any> = {}): Promise<number> {
-    return this.modelClient.update({ where: { id }, data: item });
+  async updateById(id: number, item: Record<string, any> = {}) {
+    return await this.modelClient.update({ where: { id }, data: item });
   }
 
   deleteById(id: number): Promise<T> {

@@ -130,15 +130,15 @@ model league_matches {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
 
-  league               leagues                @relation("league_matches", fields: [league_id], references: [id])
-  home_team            teams                  @relation("home_team", fields: [home_team_id], references: [id])
-  away_team            teams                  @relation("away_team", fields: [away_team_id], references: [id])
-  match_penalty_scores match_penalty_scores[]
+  league        leagues               @relation("league_matches", fields: [league_id], references: [id])
+  home_team     teams                 @relation("home_team", fields: [home_team_id], references: [id])
+  away_team     teams                 @relation("away_team", fields: [away_team_id], references: [id])
+  match_penalty match_penalty_scores?
 }
 
 model match_penalty_scores {
   id              Int @id @default(autoincrement())
-  match_id        Int
+  match_id        Int @unique
   home_team_score Int
   away_team_score Int
 

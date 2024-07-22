@@ -358,7 +358,7 @@ paths:
           description: "Internal Server Error"
 
   /matches/{leagueId}/generate:
-    put:
+    post:
       tags:
         - Match
       summary: "Generate league matches"
@@ -379,5 +379,84 @@ paths:
           description: "League not found"
         409:
           description: "Not enough teams to start tournament"
+        500:
+          description: "Internal Server Error"
+
+  /matches/{leagueId}:
+    get:
+      tags:
+        - Match
+      summary: "Fetch league matches"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Fetched matches data successfully"
+        404:
+          description: "League not found"
+        500:
+          description: "Internal Server Error"
+
+  /matches/{leagueId}/{matchId}/result:
+    put:
+      tags:
+        - Match
+      summary: "Update league match result"
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league.
+          required: true
+          type: string
+        - name: matchId
+          in: path
+          description: Id of the match.
+          required: true
+          type: string
+        - name: home_team_score
+          in: formData
+          description: Score of the home team.
+          required: true
+          type: string
+        - name: away_team_score
+          in: formData
+          description: Score of the away team.
+          required: true
+          type: string
+        - name: extra_time
+          in: formData
+          description: If extra time happend or not.
+          required: true
+          type: string
+        - name: penalties
+          in: formData
+          description: If penalties happend or not.
+          required: true
+          type: string
+        - name: home_team_penalty
+          in: formData
+          description: Penalty score of the home team.
+          required: true
+          type: string
+        - name: away_team_penalty
+          in: formData
+          description: Penalty score of the away team.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Updated result successfully"
+        404:
+          description: "Match not found"
         500:
           description: "Internal Server Error"

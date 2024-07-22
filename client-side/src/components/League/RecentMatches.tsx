@@ -19,10 +19,10 @@ const RecentMatches = ({ leagueMatches }: IRecentMatchesProps) => {
         <p className="text-red text-[18px]">No recent matches available...</p>
       ) : (
         <div>
-          <div>
+          <div className="px-[10px]">
             {recentLeagueMatches &&
-              recentLeagueMatches.map((match, index) => {
-                return <>{index > 0 && <MatchCard data={match} />}</>;
+              recentLeagueMatches.reverse().map((match, index) => {
+                return <>{index < 3 && <MatchCard data={match} />}</>;
               })}
           </div>
           <p

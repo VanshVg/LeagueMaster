@@ -39,7 +39,7 @@ export interface ILeagueMatches {
   status: "pending" | "completed";
   home_team: ITeams;
   away_team: ITeams;
-  match_penalty_scores: IMatchPenalty;
+  match_penalty: IMatchPenalty;
   deleted_at: Date | null;
   created_at: Date;
   updated_at: Date;
@@ -76,3 +76,8 @@ export interface IUserLeagues extends ILeagues {
 export interface ITypes {
   [x: number]: string;
 }
+
+export type IModalProps = {
+  isOpen: boolean;
+  onRequestClose: () => void;
+};

@@ -79,7 +79,7 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         deleted_at: true,
         league_users: true,
         league_matches: {
-          include: { home_team: true, away_team: true, match_penalty_scores: true },
+          include: { home_team: true, away_team: true, match_penalty: true },
           orderBy: { match_number: "asc" },
         },
         teams: true,

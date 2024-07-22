@@ -71,9 +71,9 @@ const Matches = () => {
               <div className="h-[1px] bg-secondary w-[80%] mx-auto" />
               {matchData && matchData.length > 0 ? (
                 <div className="flex flex-wrap w-[90%] mx-auto">
-                  {matchData.map((match) => {
+                  {matchData.map((match, index) => {
                     return (
-                      <div className="w-[calc(100%/2)] px-[20px]">
+                      <div className="w-[calc(100%/2)] px-[20px]" key={index}>
                         <MatchCard data={match} />
                       </div>
                     );
