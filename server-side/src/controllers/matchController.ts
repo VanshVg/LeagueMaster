@@ -63,7 +63,7 @@ export const generateMatches = async (req: Request, res: Response) => {
     });
 
     await matchRepository.createMany(matchData);
-    await leagueRepository.updateById(Number(leagueId), { staus: "league" });
+    await leagueRepository.updateById(Number(leagueId), { status: "league" });
     return generalResponse(res, 200, null, "success", "Generated matches successfully");
   } catch (error) {
     logger.error(error);

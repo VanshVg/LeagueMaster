@@ -248,29 +248,16 @@ paths:
         500:
           description: "Internal Server Error"
 
-  /league/teams/{leagueId}:
-    post:
+  /league/archived:
+    get:
       tags:
         - League
-      summary: "Create Teams"
+      summary: "Fetch all user archived leagues"
       produces:
         - application/json
-      consumes:
-        - application/x-www-form-urlencoded
-      parameters:
-        - name: leagueId
-          in: path
-          description: Id of the league in which teams to be created.
-          required: true
-          type: string
-        - name: [teamNames]
-          in: formData
-          description: Name of the teams user want to create.
-          required: true
-          type: string
       responses:
         200:
-          description: "League created successfully"
+          description: "Fetched archived leagues data successfully"
         500:
           description: "Internal Server Error"
 
@@ -479,5 +466,31 @@ paths:
           description: "Fetched teams data successfully"
         404:
           description: "League not found"
+        500:
+          description: "Internal Server Error"
+
+  /teams/{leagueId}:
+    post:
+      tags:
+        - Team
+      summary: "Create Teams"
+      produces:
+        - application/json
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league in which teams to be created.
+          required: true
+          type: string
+        - name: [teamNames]
+          in: formData
+          description: Name of the teams user want to create.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "League created successfully"
         500:
           description: "Internal Server Error"

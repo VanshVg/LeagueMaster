@@ -123,3 +123,21 @@ export const getOneLeague = async (req: Request, res: Response) => {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
+
+export const getArchivedLeagues = async (req: Request, res: Response) => {
+  try {
+    const userId = (req.user as users).id;
+    const leagues: leagues[] = await leagueRepository.getArchivedLeagues(userId);
+
+    return generalResponse(
+      res,
+      200,
+      leagues,
+      "success",
+      "Fetched archived leagues data successfully"
+    );
+  } catch (error) {
+    logger.error(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};

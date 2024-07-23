@@ -2,7 +2,7 @@ import { leagues } from "@prisma/client";
 
 import BaseRepository from "./base/BaseRepository";
 import prisma from "../../prisma/script";
-import { ILeague, ITeamsData, IUserLeagues } from "./interfaces";
+import { ILeague,  IUserLeagues } from "./interfaces";
 
 export default class LeagueRepository extends BaseRepository<leagues> {
   constructor() {
@@ -13,7 +13,7 @@ export default class LeagueRepository extends BaseRepository<leagues> {
     return await prisma.leagues.findMany({
       where: {
         league_users: {
-          some: { user_id: userId },
+          some: { user_id: userId, is_archived: false },
         },
         deleted_at: null,
       },
@@ -23,7 +23,6 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         joining_code: true,
         type_id: true,
         status: true,
-        is_archived: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
@@ -51,7 +50,6 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         joining_code: true,
         type_id: true,
         status: true,
-        is_archived: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
@@ -77,7 +75,6 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         joining_code: true,
         type_id: true,
         status: true,
-        is_archived: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
@@ -91,7 +88,29 @@ export default class LeagueRepository extends BaseRepository<leagues> {
     });
   }
 
-  async createTeams(teamsData: ITeamsData[]) {
-    return await prisma.teams.createMany({ data: teamsData });
+  async getArchivedLeagues(userId: number): Promise<IUserLeagues[]> {
+    return await prisma.leagues.findMany({
+      where: {
+        league_users: {
+          some: { user_id: userId, is_archived: true },
+        },
+        deleted_at: null,
+      },
+      select: {
+        id: true,
+        name: true,
+        joining_code: true,
+        type_id: true,
+        status: true,
+        created_at: true,
+        updated_at: true,
+        deleted_at: true,
+        league_users: true,
+        league_matches: {
+          orderBy: { match_number: "asc" },
+        },
+        teams: true,
+      },
+    });
   }
 }

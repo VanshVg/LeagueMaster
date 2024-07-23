@@ -19,7 +19,7 @@ export const addTeams = async (req: Request, res: Response) => {
       team_name: teamName,
     }));
 
-    await leagueRepository.createTeams(teamsData);
+    await teamRepository.createTeams(teamsData);
 
     return generalResponse(res, 200, null, "success", "Created teams successfully");
   } catch (error) {

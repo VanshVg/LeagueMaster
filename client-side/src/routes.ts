@@ -3,6 +3,7 @@ import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import Verify from "./pages/Auth/Verify";
+import Archived from "./pages/Dashboard/Archived";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Settings from "./pages/Dashboard/Settings";
 import LandingPage from "./pages/LandingPage";
@@ -46,6 +47,10 @@ export const privateRoutes = [
   {
     path: "/settings",
     Element: Settings,
+  },
+  {
+    path: "/archived",
+    Element: Archived,
   },
   {
     path: "/league/:leagueId",

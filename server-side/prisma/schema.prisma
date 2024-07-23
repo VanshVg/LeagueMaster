@@ -63,7 +63,6 @@ model leagues {
   joining_code String       @unique
   type_id      Int
   status       LeagueStatus @default(pending)
-  is_archived  Boolean      @default(false)
 
   deleted_at DateTime?
   created_at DateTime  @default(now())
@@ -76,10 +75,11 @@ model leagues {
 }
 
 model league_users {
-  id        Int        @id @default(autoincrement())
-  user_id   Int
-  league_id Int
-  role      LeagueRole
+  id          Int        @id @default(autoincrement())
+  user_id     Int
+  league_id   Int
+  role        LeagueRole
+  is_archived Boolean    @default(false)
 
   users   users   @relation("users_league", fields: [user_id], references: [id])
   leagues leagues @relation("league_users", fields: [league_id], references: [id])
