@@ -6,4 +6,7 @@ export default class TeamRepository extends BaseRepository<teams> {
   constructor() {
     super(prisma.teams);
   }
+  // async (){
+  //   prisma.teams.findMany({where:{league_id:2},{}})
+  // }
 }

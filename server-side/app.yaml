@@ -460,3 +460,24 @@ paths:
           description: "Match not found"
         500:
           description: "Internal Server Error"
+
+  /teams/standings/{leagueId}:
+    get:
+      tags:
+        - Team
+      summary: "Fetch teams"
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - name: leagueId
+          in: path
+          description: Id of the league.
+          required: true
+          type: string
+      responses:
+        200:
+          description: "Fetched teams data successfully"
+        404:
+          description: "League not found"
+        500:
+          description: "Internal Server Error"

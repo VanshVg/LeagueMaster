@@ -1,7 +1,7 @@
 import { type PrismaClient } from "@prisma/client/extension";
 
 const DEFAULT_ORDER_BY = {
-  created_at: "desc",
+  created_at: "asc",
 };
 
 export default abstract class BaseRepository<T> {
@@ -15,11 +15,11 @@ export default abstract class BaseRepository<T> {
     return this.modelClient.createMany({ data: item });
   }
 
-  getAll(conditions: Record<string, any> = {}, options: Record<string, any> = {}): Promise<T[]> {
+  getAll(options: Record<string, any> = {}): Promise<T[]> {
     if (!options.orderBy) {
       options.orderBy = DEFAULT_ORDER_BY;
     }
-    return this.modelClient.findMany({ where: conditions }, options);
+    return this.modelClient.findMany(options);
   }
 
   getOne(condition: Record<string, any> = {}): Promise<T | null> {

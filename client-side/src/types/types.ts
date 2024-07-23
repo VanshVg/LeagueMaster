@@ -56,12 +56,12 @@ export interface ITeams {
   id: number;
   league_id: number;
   team_name: string;
-  matches_played: number | null;
-  matches_won: number | null;
-  matches_lost: number | null;
-  goals_scored: number | null;
-  goals_conceded: number | null;
-  points: number | null;
+  matches_played: number;
+  matches_won: number;
+  matches_lost: number;
+  goals_scored: number;
+  goals_conceded: number;
+  points: number;
   deleted_at: Date | null;
   created_at: Date;
   updated_at: Date;

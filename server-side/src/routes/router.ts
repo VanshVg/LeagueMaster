@@ -5,6 +5,7 @@ import authRoutes from "./authRouter";
 import leagueRoutes from "./leagueRouter";
 import userRoutes from "./userRouter";
 import matchRoutes from "./matchRouter";
+import teamRoutes from "./teamRoutes";
 import { applyPassportStrategy } from "../middlewares/passport";
 
 applyPassportStrategy();
@@ -17,5 +18,6 @@ router.use("/auth", authRoutes);
 router.use("/league", auth, leagueRoutes);
 router.use("/user", auth, userRoutes);
 router.use("/matches", auth, matchRoutes);
+router.use("/teams", auth, teamRoutes);
 
 export default router;
