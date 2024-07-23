@@ -23,6 +23,7 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         joining_code: true,
         type_id: true,
         status: true,
+        is_archived: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
@@ -50,10 +51,12 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         joining_code: true,
         type_id: true,
         status: true,
+        is_archived: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,
         league_users: true,
+
         league_matches: {
           orderBy: { match_number: "asc" },
         },
@@ -74,6 +77,7 @@ export default class LeagueRepository extends BaseRepository<leagues> {
         joining_code: true,
         type_id: true,
         status: true,
+        is_archived: true,
         created_at: true,
         updated_at: true,
         deleted_at: true,

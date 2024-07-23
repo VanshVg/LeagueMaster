@@ -36,9 +36,9 @@ const MatchCard = ({ data, changeResultHandler }: IRecentMatchCardProps) => {
       )}
       <div className="flex justify-center gap-[20px] max-h-[60px] px-[10px] mt-[20px]">
         <p className="text-primary text-[20px] w-[45%] text-right mt-[13px]">
-          {data.home_team.team_name.length > 20
-            ? data.home_team.team_name.slice(0, 20) + "..."
-            : data.home_team.team_name}
+          {data.home_team?.team_name?.length > 20
+            ? data.home_team?.team_name?.slice(0, 20) + "..."
+            : data.home_team?.team_name}
         </p>
         {data.status === "pending" ? (
           <p className="text-[40px] text-secondary">VS</p>
@@ -61,9 +61,9 @@ const MatchCard = ({ data, changeResultHandler }: IRecentMatchCardProps) => {
         )}
 
         <p className="text-primary text-[20px] text-left w-[45%] mt-[13px]">
-          {data.away_team.team_name.length > 20
-            ? data.away_team.team_name.slice(0, 20) + "..."
-            : data.away_team.team_name}
+          {data.away_team?.team_name?.length > 20
+            ? data.away_team?.team_name?.slice(0, 20) + "..."
+            : data.away_team?.team_name}
         </p>
       </div>
       {data.status === "pending" && (

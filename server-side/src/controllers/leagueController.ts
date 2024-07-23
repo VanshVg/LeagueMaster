@@ -117,27 +117,7 @@ export const getOneLeague = async (req: Request, res: Response) => {
     if (league === null) {
       return generalResponse(res, 404, null, "not_found", "League not found");
     }
-
     return generalResponse(res, 200, league, "success", "League data fetched successfully");
-  } catch (error) {
-    logger.error(error);
-    return generalResponse(res, 500, null, "server", "Internal Server Error");
-  }
-};
-
-export const addTeams = async (req: Request, res: Response) => {
-  try {
-    const { leagueId } = req.params;
-    const { teams } = req.body;
-
-    const teamsData = teams.map((teamName: string) => ({
-      league_id: Number(leagueId),
-      team_name: teamName,
-    }));
-
-    await leagueRepository.createTeams(teamsData);
-
-    return generalResponse(res, 200, null, "success", "Created teams successfully");
   } catch (error) {
     logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal Server Error");

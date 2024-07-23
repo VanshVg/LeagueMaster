@@ -28,7 +28,7 @@ const AddTeams = ({ setNewTeams }: IAddTeamsProps) => {
       }
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/league/teams/${leagueId}`,
+          `${process.env.REACT_APP_BACKEND_URL}/teams/${leagueId}`,
           { teams: updatedData },
           { withCredentials: true }
         );

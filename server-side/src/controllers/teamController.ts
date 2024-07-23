@@ -9,6 +9,25 @@ import TeamRepository from "../repositories/TeamRepository";
 const leagueRepository = new LeagueRepository();
 const teamRepository = new TeamRepository();
 
+export const addTeams = async (req: Request, res: Response) => {
+  try {
+    const { leagueId } = req.params;
+    const { teams } = req.body;
+
+    const teamsData = teams.map((teamName: string) => ({
+      league_id: Number(leagueId),
+      team_name: teamName,
+    }));
+
+    await leagueRepository.createTeams(teamsData);
+
+    return generalResponse(res, 200, null, "success", "Created teams successfully");
+  } catch (error) {
+    logger.error(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};
+
 export const teamStandings = async (req: Request, res: Response) => {
   try {
     const { leagueId } = req.params;
