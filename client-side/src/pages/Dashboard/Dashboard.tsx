@@ -11,29 +11,15 @@ import { PrimaryButton } from "../../components/Buttons/Buttons";
 import CreateLeague from "../../components/Modals/CreateLeague";
 
 const Dashboard = () => {
-  const [userLeagues, setUserLeagues] = useState<IUserLeagues[]>();
   const [userLeaguesError, setUserLeaguesError] = useState<IError>({ type: "", message: "" });
   const [isCreateLeagueOpen, setIsCreateLeagueOpen] = useState<boolean>(false);
 
   const dashboardDiv = useRef(null);
 
   const newUserLeagues = useSelector((state: RootState) => state.userLeagues);
-
-  const fetchUserLeagues = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/league/leagues`, {
-        withCredentials: true,
-      });
-      if (response.data.type === "success") {
-        setUserLeagues(response.data.data);
-      }
-    } catch (error: any) {
-      setUserLeaguesError({ type: error.response.data.type, message: error.response.data.message });
-    }
-  };
+  const userLeagues = useSelector((state: RootState) => state.userLeagues.userLeagues);
 
   useEffect(() => {
-    fetchUserLeagues();
     (dashboardDiv.current! as HTMLElement).scrollTop = (
       dashboardDiv.current! as HTMLElement
     ).scrollHeight;

@@ -17,6 +17,7 @@ const League = () => {
 
   const [leagueError, setLeagueError] = useState<IError>({ type: "", message: "" });
   const [leagueData, setLeagueData] = useState<IUserLeagues>();
+  const [newResult, setNewResult] = useState<boolean>(false);
 
   const fetchLeague = async () => {
     try {
@@ -37,7 +38,11 @@ const League = () => {
   };
   useEffect(() => {
     fetchLeague();
-  }, []);
+  }, [newResult, leagueId]);
+
+  const changeResultHandler = () => {
+    setNewResult(!newResult);
+  };
 
   return (
     <div className="h-screen font-ss3">
@@ -82,11 +87,17 @@ const League = () => {
                       <div className="flex items-start mt-[15px] gap-[10px]">
                         <div className="w-[50%] border-[1px] pt-[5px] pb-[20px] border-primaryText border-opacity-40 rounded-[5px] min-h-[250px]">
                           <h2 className="text-[35px] text-primaryText">Recent Matches</h2>
-                          <RecentMatches leagueMatches={leagueData?.league_matches} />
+                          <RecentMatches
+                            leagueMatches={leagueData?.league_matches}
+                            changeResultHandler={changeResultHandler}
+                          />
                         </div>
                         <div className="w-[50%] border-[1px] pt-[5px] pb-[20px] border-primaryText border-opacity-40 rounded-[5px] min-h-[250px]">
                           <h2 className="text-[35px]">Upcoming Matches</h2>
-                          <UpcomingMatches leagueMatches={leagueData?.league_matches} />
+                          <UpcomingMatches
+                            leagueMatches={leagueData?.league_matches}
+                            changeResultHandler={changeResultHandler}
+                          />
                         </div>
                       </div>
                     )}

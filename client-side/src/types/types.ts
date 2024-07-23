@@ -81,3 +81,16 @@ export type IModalProps = {
   isOpen: boolean;
   onRequestClose: () => void;
 };
+
+export type IAxios = {
+  url: string;
+  method: string;
+  data: {};
+  params: {};
+};
+
+export type IApiResponse = {
+  data: [] | {} | null;
+  type: string;
+  message: string;
+};

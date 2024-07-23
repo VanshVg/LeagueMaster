@@ -1,16 +1,63 @@
 import { Tooltip } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import { RootState } from "../redux/store";
 import Swal from "sweetalert2";
 import Cookies from "universal-cookie";
+import { toggleLeagues } from "../redux/reducers/sidebarReducer";
+import LeagueSidebarListing from "./League/LeagueSidebarListing";
+import useAxios from "../hooks/useAxios";
+import { useEffect, useState } from "react";
+import { IApiResponse, IError, IUserLeagues } from "../types/types";
+import axios from "axios";
+import { setUserLeagues } from "../redux/reducers/leaguesReducer";
 
 const Sidebar = () => {
-  const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isSidebarOpen);
+  const isSidebarOpen: boolean = useSelector((state: RootState) => state.sidebar.isSidebarOpen);
+  const isLeagueOpen: boolean = useSelector((state: RootState) => state.sidebar.isLeagueOpen);
+  const [leagues, setLeagues] = useState<IUserLeagues[]>();
+  const [userLeaguesError, setUserLeaguesError] = useState<IError>({ type: "", message: "" });
+
+  const userLeagues: IUserLeagues[] = useSelector(
+    (state: RootState) => state.userLeagues.userLeagues
+  );
 
   const navigate: NavigateFunction = useNavigate();
   const cookies: Cookies = new Cookies();
   const location = useLocation();
+  const dispatch = useDispatch();
+
+  const { callApi } = useAxios();
+
+  const fetchUserLeagues = async () => {
+    try {
+      const response: IApiResponse = await callApi({
+        url: `/league/leagues`,
+        method: "GET",
+        data: {},
+        params: {},
+      });
+      if (response.type === "success") {
+        dispatch(setUserLeagues(response.data));
+        setLeagues(response.data as IUserLeagues[]);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setUserLeaguesError({
+          type: error?.response?.data.type,
+          message: error?.response?.data.message,
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (userLeagues.length === 0) {
+      fetchUserLeagues();
+    } else {
+      setLeagues(userLeagues);
+    }
+  }, [userLeagues]);
 
   const handleLogout = () => {
     Swal.fire({
@@ -44,6 +91,10 @@ const Sidebar = () => {
       });
   };
 
+  const leagueHandler = () => {
+    dispatch(toggleLeagues());
+  };
+
   return (
     <>
       {isSidebarOpen ? (
@@ -61,18 +112,23 @@ const Sidebar = () => {
             </div>
           </Link>
           <div className="h-[1px] bg-[grey] mt-[15px] opacity-50 w-full"></div>
-          <Link to={"/leagues"}>
-            <div
-              className={`${
-                location.pathname === "/leagues"
-                  ? "mt-[15px] rounded-[12px] -ml-[10px] py-[2px] cursor-pointer flex max-w-[95%] bg-skyBlue"
-                  : "mt-[15px] rounded-[12px] -ml-[10px] py-[2px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
-              }`}
-            >
-              <img src="/icons/medal.svg" className="ml-[42px] h-[30px]" alt="leagues" />
-              <p className="ml-[13px] mt-[3px] text-[18px] text-primaryText">Leagues</p>
+          <div
+            className="mt-[15px] rounded-[12px] -ml-[10px] py-[2px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
+            onClick={leagueHandler}
+          >
+            <img src="/icons/medal.svg" className="ml-[42px] h-[30px]" alt="leagues" />
+            <p className="ml-[13px] mt-[3px] text-[18px] text-primaryText">Leagues</p>
+            {isLeagueOpen ? (
+              <img src="/icons/down-arrow-blue.svg" alt="" className="ml-[20px] mt-[5px]" />
+            ) : (
+              <img src="/icons/right-arrow-blue.svg" alt="" className="ml-[20px] mt-[5px]" />
+            )}
+          </div>
+          {isLeagueOpen && (
+            <div>
+              <LeagueSidebarListing userLeagues={leagues} />
             </div>
-          </Link>
+          )}
           <div className="h-[1px] bg-[grey] mt-[15px] opacity-50 w-full"></div>
           <Link to={"/archived"}>
             <div
@@ -125,19 +181,14 @@ const Sidebar = () => {
             </Tooltip>
           </Link>
           <div className="h-[1px] bg-[grey] mt-[14px] opacity-50 w-full"></div>
-          <Link to={"/leagues"}>
-            <Tooltip title="Leagues">
-              <div
-                className={`${
-                  location.pathname === "/leagues"
-                    ? "mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex max-w-[95%] bg-skyBlue"
-                    : "mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
-                }`}
-              >
-                <img src="/icons/medal.svg" className="ml-[42px] h-[30px]" alt="leagues" />
-              </div>
-            </Tooltip>
-          </Link>
+          <Tooltip title="Leagues">
+            <div
+              className="mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
+              onClick={leagueHandler}
+            >
+              <img src="/icons/medal.svg" className="ml-[42px] h-[30px]" alt="leagues" />
+            </div>
+          </Tooltip>
           <div className="h-[1px] bg-[grey] mt-[14px] opacity-50 w-full"></div>
           <Link to={"/archived"}>
             <Tooltip title="Archived Leagues">

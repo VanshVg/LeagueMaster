@@ -74,7 +74,7 @@ export const activateAccount = async (req: Request, res: Response) => {
 
     const isUser: users | null = await userRepository.getFirst({
       verification_token: token,
-      is_active: true,
+      is_active: false,
       deleted_at: null,
     });
     if (isUser === null) {

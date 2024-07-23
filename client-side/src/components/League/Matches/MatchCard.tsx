@@ -5,6 +5,7 @@ import UpdateResult from "../../Modals/UpdateResult";
 
 type IRecentMatchCardProps = {
   data: ILeagueMatches;
+  changeResultHandler: () => void;
 };
 
 const types: ITypes = {
@@ -16,9 +17,8 @@ const types: ITypes = {
   6: "Final",
 };
 
-const MatchCard = ({ data }: IRecentMatchCardProps) => {
+const MatchCard = ({ data, changeResultHandler }: IRecentMatchCardProps) => {
   const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
-  console.log(data);
   return (
     <div className="border-[1px] text-primaryText border-primaryText py-[10px] mx-auto mt-[15px] rounded-[4px] h-[200px]">
       <div className="flex justify-between px-[10px]">
@@ -35,7 +35,7 @@ const MatchCard = ({ data }: IRecentMatchCardProps) => {
         </>
       )}
       <div className="flex justify-center gap-[20px] max-h-[60px] px-[10px] mt-[20px]">
-        <p className="text-primary text-[23px] w-[45%] text-right mt-[13px]">
+        <p className="text-primary text-[20px] w-[45%] text-right mt-[13px]">
           {data.home_team.team_name.length > 20
             ? data.home_team.team_name.slice(0, 20) + "..."
             : data.home_team.team_name}
@@ -60,7 +60,7 @@ const MatchCard = ({ data }: IRecentMatchCardProps) => {
           </div>
         )}
 
-        <p className="text-primary text-[23px] text-left w-[45%] mt-[13px]">
+        <p className="text-primary text-[20px] text-left w-[45%] mt-[13px]">
           {data.away_team.team_name.length > 20
             ? data.away_team.team_name.slice(0, 20) + "..."
             : data.away_team.team_name}
@@ -79,6 +79,7 @@ const MatchCard = ({ data }: IRecentMatchCardProps) => {
           <UpdateResult
             isOpen={isResultOpen}
             onRequestClose={() => {
+              changeResultHandler();
               setIsResultOpen(false);
             }}
             data={data}

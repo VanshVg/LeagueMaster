@@ -13,6 +13,7 @@ import MatchCard from "../../components/League/Matches/MatchCard";
 const Matches = () => {
   const [matchData, setMatchData] = useState<ILeagueMatches[]>();
   const [matchError, setMatchError] = useState<IError>({ type: "", message: "" });
+  const [newResult, setNewResult] = useState<boolean>(false);
 
   const leagueId = useParams().leagueId;
 
@@ -35,7 +36,11 @@ const Matches = () => {
   };
   useEffect(() => {
     fetchLeague();
-  }, []);
+  }, [newResult]);
+
+  const changeResultHandler = () => {
+    setNewResult(!newResult);
+  };
 
   const generateMatchesHandler = async () => {
     try {
@@ -48,7 +53,6 @@ const Matches = () => {
         fetchLeague();
       }
     } catch (error) {
-      console.log(error);
       if (axios.isAxiosError(error)) {
         setMatchError({ type: error.response?.data.type, message: error.response?.data.message });
       }
@@ -74,7 +78,7 @@ const Matches = () => {
                   {matchData.map((match, index) => {
                     return (
                       <div className="w-[calc(100%/2)] px-[20px]" key={index}>
-                        <MatchCard data={match} />
+                        <MatchCard data={match} changeResultHandler={changeResultHandler} />
                       </div>
                     );
                   })}

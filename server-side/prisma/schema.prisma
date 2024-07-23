@@ -88,12 +88,12 @@ model teams {
   id             Int    @id @default(autoincrement())
   league_id      Int
   team_name      String
-  matches_played Int?
-  matches_won    Int?
-  matches_lost   Int?
-  goals_scored   Int?
-  goals_conceded Int?
-  points         Int?
+  matches_played Int    @default(0)
+  matches_won    Int    @default(0)
+  matches_lost   Int    @default(0)
+  goals_scored   Int    @default(0)
+  goals_conceded Int    @default(0)
+  points         Int    @default(0)
 
   deleted_at DateTime?
   created_at DateTime  @default(now())
@@ -117,7 +117,7 @@ model league_matches {
   id              Int         @id @default(autoincrement())
   league_id       Int
   match_type_id   Int
-  match_number    Int?
+  match_number    Int
   home_team_id    Int
   away_team_id    Int
   home_team_score Int?

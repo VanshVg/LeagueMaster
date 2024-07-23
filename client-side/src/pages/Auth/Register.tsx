@@ -43,7 +43,6 @@ const Register = () => {
           setActivationCode(response.data.data.verificationToken);
         }
       } catch (error: any) {
-        console.log(error);
         setRegisterError({ type: error.response.data.type, message: error.response.data.message });
       }
     },

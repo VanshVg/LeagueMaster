@@ -10,10 +10,13 @@ const leagueSlice = createSlice({
   initialState,
   reducers: {
     setUserLeagues(state, action) {
+      state.userLeagues = action.payload;
+    },
+    addUserLeague(state, action) {
       state.userLeagues.push(action.payload);
     },
   },
 });
 
 export const leagueReducer = leagueSlice.reducer;
-export const { setUserLeagues } = leagueSlice.actions;
+export const { setUserLeagues, addUserLeague } = leagueSlice.actions;

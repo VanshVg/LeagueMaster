@@ -61,7 +61,7 @@ const Teams = () => {
               {leagueData?.league_matches.length === 0 && (
                 <div>
                   <div
-                    className="flex cursor-pointer w-[195px] mx-auto"
+                    className="flex cursor-pointer w-[235px] mx-auto"
                     onClick={showAddTeamsHandler}
                   >
                     <h2 className="text-[30px] text-center ml-[20px] mt-[20px] font-bold text-primaryText">

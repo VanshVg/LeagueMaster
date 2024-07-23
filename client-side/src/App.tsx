@@ -3,7 +3,7 @@ import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AuthRoutes from "./components/Routes/AuthRoutes";
 import ProtectedRoutes from "./components/Routes/ProtectedRoutes";
-import { privateRoutes, publicRoutes } from "./types/constants";
+import { privateRoutes, publicRoutes } from "./routes";
 
 const App = () => {
   return (

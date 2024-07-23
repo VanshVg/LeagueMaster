@@ -4,9 +4,10 @@ import MatchCard from "./Matches/MatchCard";
 
 type IRecentMatchesProps = {
   leagueMatches: ILeagueMatches[] | undefined;
+  changeResultHandler: () => void;
 };
 
-const RecentMatches = ({ leagueMatches }: IRecentMatchesProps) => {
+const RecentMatches = ({ leagueMatches, changeResultHandler }: IRecentMatchesProps) => {
   const recentLeagueMatches = leagueMatches?.filter((match) => {
     return match.status === "completed";
   });
@@ -22,7 +23,13 @@ const RecentMatches = ({ leagueMatches }: IRecentMatchesProps) => {
           <div className="px-[10px]">
             {recentLeagueMatches &&
               recentLeagueMatches.reverse().map((match, index) => {
-                return <>{index < 3 && <MatchCard data={match} />}</>;
+                return (
+                  <>
+                    {index < 3 && (
+                      <MatchCard data={match} changeResultHandler={changeResultHandler} />
+                    )}
+                  </>
+                );
               })}
           </div>
           <p

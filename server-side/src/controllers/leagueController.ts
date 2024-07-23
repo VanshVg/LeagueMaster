@@ -6,7 +6,7 @@ import { league_types, leagues, users } from "@prisma/client";
 import { generalResponse } from "../helpers/responseHelper";
 import LeagueRepository from "../repositories/LeagueRepository";
 import LeagueTypesRepository from "../repositories/LeagueTypesRepository";
-import { IUserLeagues } from "../repositories/interfaces";
+import { ILeague, IUserLeagues } from "../repositories/interfaces";
 import { logger } from "../utils/logger";
 
 const leagueRepository = new LeagueRepository();
@@ -91,7 +91,7 @@ export const joinLeague = async (req: Request, res: Response) => {
       return generalResponse(res, 409, null, "conflict", "You're already part of this team");
     }
 
-    const addUser = await leagueRepository.updateById(league.id, {
+    await leagueRepository.updateById(league.id, {
       league_users: {
         create: {
           user_id: userId,
@@ -99,7 +99,11 @@ export const joinLeague = async (req: Request, res: Response) => {
         },
       },
     });
-    return generalResponse(res, 200, addUser, "success", "Joined league successfully");
+    const newLeague: ILeague | null = await leagueRepository.getOneLeague(league.id);
+    if (newLeague === null) {
+      return generalResponse(res, 500, null, "server", "Internal Server Error");
+    }
+    return generalResponse(res, 200, newLeague, "success", "Joined league successfully");
   } catch (error) {
     logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal Server Error");

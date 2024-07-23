@@ -5,7 +5,7 @@ import axios from "axios";
 import { IError, IModalProps } from "../../types/types";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useDispatch } from "react-redux";
-import { setUserLeagues } from "../../redux/reducers/leaguesReducer";
+import { addUserLeague } from "../../redux/reducers/leaguesReducer";
 import joinLeagueSchema from "../../schema/joinLeagueSchema";
 
 const JoinLeague = ({ isOpen, onRequestClose }: IModalProps) => {
@@ -31,7 +31,7 @@ const JoinLeague = ({ isOpen, onRequestClose }: IModalProps) => {
             }
           );
           if (response.data.type === "success") {
-            dispatch(setUserLeagues(response.data.data));
+            dispatch(addUserLeague(response.data.data));
             resetForm();
             onRequestClose();
           }

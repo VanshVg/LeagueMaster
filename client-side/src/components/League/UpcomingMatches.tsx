@@ -5,9 +5,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 type IUpcomingMatchesProps = {
   leagueMatches: ILeagueMatches[] | undefined;
+  changeResultHandler: () => void;
 };
 
-const UpcomingMatches = ({ leagueMatches }: IUpcomingMatchesProps) => {
+const UpcomingMatches = ({ leagueMatches, changeResultHandler }: IUpcomingMatchesProps) => {
   const [upcomingLeagueMatches, setUpcomingLeagueMatches] = useState<ILeagueMatches[]>();
   useEffect(() => {
     if (leagueMatches) {
@@ -32,7 +33,9 @@ const UpcomingMatches = ({ leagueMatches }: IUpcomingMatchesProps) => {
               upcomingLeagueMatches.map((match, index) => {
                 return (
                   <div className="px-[15px]" key={index}>
-                    {index < 3 && <MatchCard data={match} />}
+                    {index < 3 && (
+                      <MatchCard data={match} changeResultHandler={changeResultHandler} />
+                    )}
                   </div>
                 );
               })}

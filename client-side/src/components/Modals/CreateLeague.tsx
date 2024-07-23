@@ -6,7 +6,7 @@ import axios from "axios";
 import { IError, IModalProps } from "../../types/types";
 import { SecondaryButton } from "../Buttons/Buttons";
 import { useDispatch } from "react-redux";
-import { setUserLeagues } from "../../redux/reducers/leaguesReducer";
+import { addUserLeague } from "../../redux/reducers/leaguesReducer";
 
 type ILeagueTypes = {
   id: number;
@@ -54,7 +54,7 @@ const CreateLeague = ({ isOpen, onRequestClose }: IModalProps) => {
             }
           );
           if (response.data.type === "success") {
-            dispatch(setUserLeagues(response.data.data));
+            dispatch(addUserLeague({ ...response.data.data, teams: [], league_matches: [] }));
             resetForm();
             onRequestClose();
           }

@@ -28,8 +28,8 @@ const LeagueCard = ({ league }: ILeagueCardProps) => {
         <p className="text-[gray] mt-[10px]">{types[league.type_id as keyof ITypes]} Format</p>
         <div className="h-[1px] bg-secondary mt-[10px] max-w-[80%] mx-auto"></div>
         <div className="flex justify-between mx-auto text-primaryText mt-[15px] max-w-[80%] text-[15px]">
-          <p>Total Teams: {league.teams.length}</p>
-          <p>Total Matches: {league.league_matches.length}</p>
+          <p>Total Teams: {league.teams?.length}</p>
+          <p>Total Matches: {league.league_matches?.length}</p>
         </div>
       </div>
     </div>
