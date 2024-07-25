@@ -1,3 +1,5 @@
+import { ChangeEvent } from "react";
+
 export type IError = {
   type: string;
   message: string;
@@ -105,4 +107,19 @@ export type IApiResponse = {
 
 export type IUsersProps = {
   userData: IUserLeagues | undefined;
+};
+
+export type IUpdateLeagueProps = {
+  leagueData: IUserLeagues | undefined;
+};
+
+export type IInputProps = {
+  type: string;
+  id: string;
+  value: string;
+  onChange: (e: ChangeEvent) => void;
+  onBlur: any;
+  label: string;
+  errors: string | undefined;
+  touched: boolean | undefined;
 };

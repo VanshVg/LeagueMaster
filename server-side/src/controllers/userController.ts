@@ -56,7 +56,7 @@ export const updateUsername = async (req: Request, res: Response) => {
     await userRepository.updateById(user.id, { username: username });
 
     const token: string = generateToken(username);
-    return generalResponse(res, 200, token, "success", "Username updated successfully");
+    return generalResponse(res, 200, { token: token }, "success", "Username updated successfully");
   } catch (error) {
     logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal Server Error");

@@ -8,6 +8,7 @@ import Cookies from "universal-cookie";
 import { SecondaryButton } from "../../components/Buttons/Buttons";
 import { IError } from "../../types/types";
 import loginSchema from "../../schema/loginSchema";
+import Input from "../../components/Form/Input";
 
 const Login = () => {
   const initialData = {
@@ -15,15 +16,10 @@ const Login = () => {
     password: "",
   };
 
-  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loginError, setLoginError] = useState<IError>({ type: "", message: "" });
 
   const navigate = useNavigate();
   const cookies = new Cookies();
-
-  const togglePassword = (): void => {
-    setShowPassword(!showPassword);
-  };
 
   const { errors, values, handleBlur, handleChange, touched, submitForm } = useFormik({
     initialValues: initialData,
@@ -69,80 +65,29 @@ const Login = () => {
         </div>
         <div>
           <form>
-            <div className="mt-[20px] max-w-[77%] mx-auto">
-              <div className="relative">
-                <input
-                  type="text"
-                  id="username"
-                  name="username"
-                  className="block px-2.5 pb-2.5 pt-4 w-full h-[40px] text-sm text-primary bg-transparent rounded-lg border-[1px] border-primary appearance-none dark:text-primary focus:text-primary dark:border-primary dark:focus:border-primary focus:outline-none focus:ring-0 focus:border-primary peer mx-auto"
-                  placeholder=""
-                  autoComplete="off"
-                  value={values.username}
-                  onChange={handleInputChange}
-                  onBlur={handleBlur}
-                />
-                <label
-                  htmlFor="username"
-                  className="absolute text-sm text-primary dark:text-primary duration-300 transform -translate-y-4 scale-75 top-2  origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-text mx-auto"
-                >
-                  Username
-                </label>
-              </div>
-              {errors.username && touched.username ? (
-                <p className="-mb-[12px] mt-[2px] text-left text-[15px] text-red ml-[2px]">
-                  {errors.username}
-                </p>
-              ) : (
-                ""
-              )}
+            <div className="max-w-[77%] mt-[20px] mx-auto">
+              <Input
+                type="text"
+                id="username"
+                value={values.username}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                label="Username"
+                errors={errors.username}
+                touched={touched.username}
+              />
             </div>
             <div className="mt-[20px] max-w-[77%] mx-auto">
-              <div className="relative">
-                <div className="flex">
-                  <div className="w-full">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                      name="password"
-                      className="block px-2.5 pb-2.5 pt-4 w-full h-[40px] text-sm text-primary bg-transparent rounded-lg border-[1px] border-primary appearance-none dark:text-primary focus:text-primary dark:border-primary dark:focus:border-primary focus:outline-none focus:ring-0 focus:border-primary peer mx-auto"
-                      placeholder=""
-                      autoComplete="off"
-                      value={values.password}
-                      onChange={handleInputChange}
-                      onBlur={handleBlur}
-                    />
-                    <label
-                      htmlFor="password"
-                      className="absolute text-sm text-primary dark:text-primary duration-300 transform -translate-y-4 scale-75 top-2  origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-text mx-auto"
-                    >
-                      Password
-                    </label>
-                  </div>
-                  {showPassword ? (
-                    <img
-                      src="/icons/eye-show.svg"
-                      alt="password"
-                      className="-ml-[30px] cursor-pointer"
-                      onClick={togglePassword}
-                    />
-                  ) : (
-                    <img
-                      src="/icons/eye-hidden.svg"
-                      alt="confirm-password"
-                      className="-ml-[30px] cursor-pointer"
-                      onClick={togglePassword}
-                    />
-                  )}
-                </div>
-              </div>
-              {errors.password && touched.password ? (
-                <p className="-mb-[12px] mt-[2px] text-left text-[15px] text-red ml-[2px]">
-                  {errors.password}
-                </p>
-              ) : (
-                ""
-              )}
+              <Input
+                type="password"
+                id="password"
+                value={values.password}
+                onChange={handleInputChange}
+                onBlur={handleBlur}
+                label="Password"
+                errors={errors.password}
+                touched={touched.password}
+              />
               {loginError.type === "credentials" ? (
                 <p className="-mb-[12px] mt-[2px] text-left text-[15px] text-red ml-[2px]">
                   {loginError.message}

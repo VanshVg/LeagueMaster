@@ -9,6 +9,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { setProfile } from "../../redux/reducers/userReducer";
 import Cookies, { Cookie } from "universal-cookie";
+import Input from "../Form/Input";
 
 const UpdateUsername = () => {
   const username = useSelector((state: RootState) => state.user.username);
@@ -54,7 +55,7 @@ const UpdateUsername = () => {
               { withCredentials: true }
             );
             if (response.data.type === "success") {
-              cookies.set("token", response.data.data);
+              cookies.set("token", response.data.data.token);
               dispatch(setProfile({ username: values.username }));
               Swal.fire({
                 title: "Success!",
@@ -92,32 +93,16 @@ const UpdateUsername = () => {
           <div>
             <form>
               <div className="mt-[30px] ml-[20px]">
-                <div className="relative">
-                  <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    className="block px-2.5 pb-2.5 pt-4 w-full h-[40px] text-sm text-primary bg-transparent rounded-lg border-[1px] border-primary appearance-none dark:text-primary focus:text-primary dark:border-primary dark:focus:border-primary focus:outline-none focus:ring-0 focus:border-primary peer mx-auto"
-                    placeholder=""
-                    autoComplete="off"
-                    value={values.username}
-                    onChange={handleProfileChange}
-                    onBlur={handleBlur}
-                  />
-                  <label
-                    htmlFor="username"
-                    className="absolute text-sm text-primary dark:text-primary duration-300 transform -translate-y-4 scale-75 top-2  origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-primary peer-focus:dark:text-primary peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1 cursor-text mx-auto"
-                  >
-                    Username
-                  </label>
-                </div>
-                {(errors.username && touched.username) || updateUsernameError.type !== "" ? (
-                  <p className="-mb-[12px] mt-[2px] text-left text-[15px] text-red ml-[2px]">
-                    {errors.username || updateUsernameError.message}
-                  </p>
-                ) : (
-                  ""
-                )}
+                <Input
+                  type="text"
+                  id="username"
+                  value={values.username}
+                  onChange={handleProfileChange}
+                  onBlur={handleBlur}
+                  label="Username"
+                  errors={errors.username}
+                  touched={touched.username}
+                />
               </div>
             </form>
           </div>
