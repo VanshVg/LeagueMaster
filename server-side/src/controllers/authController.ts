@@ -18,13 +18,13 @@ export const register = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 400, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload", true);
     }
 
     const { username, password } = req.body;
 
     const isUser: users | null = await userRepository.getFirst({
-      username: username,
+      username: { equals: username, mode: "insensitive" },
       deleted_at: null,
     });
     if (isUser !== null) {
@@ -36,10 +36,10 @@ export const register = async (req: Request, res: Response) => {
         if (expired) {
           await userRepository.deleteById(id);
         } else {
-          return generalResponse(res, 409, null, "username", "Username already exists");
+          return generalResponse(res, 409, null, "username", "Username already exists", true);
         }
       } else {
-        return generalResponse(res, 409, null, "username", "Username already exists");
+        return generalResponse(res, 409, null, "username", "Username already exists", true);
       }
     }
 

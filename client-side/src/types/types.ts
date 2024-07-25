@@ -100,7 +100,7 @@ export type IAxios = {
 };
 
 export type IApiResponse = {
-  data: [] | {} | null;
+  data: any;
   type: string;
   message: string;
 };
@@ -122,4 +122,15 @@ export type IInputProps = {
   label: string;
   errors: string | undefined;
   touched: boolean | undefined;
+};
+
+export type IRegisterApiData = {
+  username: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export type ILoginApiData = {
+  username: string;
+  password: string;
 };

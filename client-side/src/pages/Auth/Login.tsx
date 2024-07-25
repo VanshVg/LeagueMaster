@@ -2,13 +2,13 @@ import { Helmet } from "react-helmet";
 import { ChangeEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import axios from "axios";
-import Cookies from "universal-cookie";
 
 import { SecondaryButton } from "../../components/Buttons/Buttons";
-import { IError } from "../../types/types";
+import { IApiResponse, IError } from "../../types/types";
 import loginSchema from "../../schema/loginSchema";
 import Input from "../../components/Form/Input";
+import useAuthServices from "../../hooks/services/authServices";
+import Cookies from "universal-cookie";
 
 const Login = () => {
   const initialData = {
@@ -19,23 +19,18 @@ const Login = () => {
   const [loginError, setLoginError] = useState<IError>({ type: "", message: "" });
 
   const navigate = useNavigate();
-  const cookies = new Cookies();
+  const cookies: Cookies = new Cookies();
+
+  const { loginApi } = useAuthServices();
 
   const { errors, values, handleBlur, handleChange, touched, submitForm } = useFormik({
     initialValues: initialData,
     validationSchema: loginSchema,
     onSubmit: async (values) => {
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/auth/login`,
-          values
-        );
-        if (response.data.type === "success") {
-          cookies.set("token", response.data.data.token, { path: "/" });
-          navigate("/dashboard");
-        }
-      } catch (error: any) {
-        setLoginError({ type: error.response.data.type, message: error.response.data.message });
+      const result: IApiResponse = await loginApi(values);
+      if (result.type === "success") {
+        cookies.set("access_token", result.data?.token);
+        navigate("/dashboard");
       }
     },
   });

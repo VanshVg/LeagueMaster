@@ -1,13 +1,13 @@
 import { useFormik } from "formik";
 import { ChangeEvent, useState } from "react";
 import { Helmet } from "react-helmet";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import registerSchema from "../../schema/registerSchema";
 import { SecondaryButton } from "../../components/Buttons/Buttons";
-import { IError } from "../../types/types";
+import { IApiResponse } from "../../types/types";
 import Input from "../../components/Form/Input";
+import useAuthServices from "../../hooks/services/authServices";
 
 const Register = () => {
   const initialData = {
@@ -16,31 +16,23 @@ const Register = () => {
     confirmPassword: "",
   };
 
-  const [registerError, setRegisterError] = useState<IError>({ type: "", message: "" });
   const [activationCode, setActivationCode] = useState<string>("");
 
   const navigate = useNavigate();
+  const { registerApi } = useAuthServices();
 
   const { errors, values, handleBlur, handleChange, touched, submitForm } = useFormik({
     initialValues: initialData,
     validationSchema: registerSchema,
     onSubmit: async (values) => {
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/auth/register`,
-          values
-        );
-        if (response.data.type === "success") {
-          setActivationCode(response.data.data.verificationToken);
-        }
-      } catch (error: any) {
-        setRegisterError({ type: error.response.data.type, message: error.response.data.message });
+      const result: IApiResponse = await registerApi(values);
+      if (result.type === "success") {
+        setActivationCode(result.data!.verificationToken);
       }
     },
   });
 
   const handleInputChange = (e: ChangeEvent): void => {
-    setRegisterError({ type: "", message: "" });
     handleChange(e);
   };
 
