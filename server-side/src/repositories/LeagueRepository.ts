@@ -2,7 +2,7 @@ import { leagues } from "@prisma/client";
 
 import BaseRepository from "./base/BaseRepository";
 import prisma from "../../prisma/script";
-import { ILeague,  IUserLeagues } from "./interfaces";
+import { ILeague, IUserLeagues } from "./interfaces";
 
 export default class LeagueRepository extends BaseRepository<leagues> {
   constructor() {
@@ -110,6 +110,19 @@ export default class LeagueRepository extends BaseRepository<leagues> {
           orderBy: { match_number: "asc" },
         },
         teams: true,
+      },
+    });
+  }
+
+  async getLeagueUsers(leagueId: number) {
+    return await prisma.leagues.findFirst({
+      where: { id: leagueId },
+      include: {
+        league_users: {
+          include: {
+            users: true,
+          },
+        },
       },
     });
   }

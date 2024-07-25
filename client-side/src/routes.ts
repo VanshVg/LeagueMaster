@@ -7,10 +7,12 @@ import Archived from "./pages/Dashboard/Archived";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Settings from "./pages/Dashboard/Settings";
 import LandingPage from "./pages/LandingPage";
+import About from "./pages/League/About";
 import League from "./pages/League/League";
 import Matches from "./pages/League/Matches";
 import Standings from "./pages/League/Standings";
 import Teams from "./pages/League/Teams";
+import Users from "./pages/League/Users";
 
 export const publicRoutes = [
   {
@@ -67,5 +69,13 @@ export const privateRoutes = [
   {
     path: "/league/:leagueId/matches",
     Element: Matches,
+  },
+  {
+    path: "/league/:leagueId/users",
+    Element: Users,
+  },
+  {
+    path: "/league/:leagueId/about",
+    Element: About,
   },
 ];

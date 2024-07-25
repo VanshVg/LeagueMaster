@@ -11,5 +11,6 @@ router.get("/leagues", leagueController.getUserLeagues);
 router.put("/join", joinLeagueValidator, leagueController.joinLeague);
 router.get("/archived", leagueController.getArchivedLeagues);
 router.get("/:leagueId", leagueController.getOneLeague);
+router.get("/:leagueId/users", leagueController.getUsers);
 
 export default router;

@@ -34,6 +34,11 @@ const LeagueNavbar = ({ active }: ILeagueNavbarProps) => {
         active={active === "users" ? true : false}
         name={"Users"}
       />
+      <LeagueNavbarCard
+        navigateTo={`/league/${leagueId}/about`}
+        active={active === "about" ? true : false}
+        name={"About"}
+      />
     </div>
   );
 };

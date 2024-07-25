@@ -3,9 +3,15 @@ export type IError = {
   message: string;
 };
 
-enum LeagueRole {
-  admin,
-  user,
+export enum LeagueRole {
+  "admin",
+  "user",
+}
+
+export interface IUsers {
+  id: number;
+  username: string;
+  is_active: boolean;
 }
 
 export interface ILeagues {
@@ -13,6 +19,7 @@ export interface ILeagues {
   name: string;
   joining_code: string;
   type_id: number;
+  status: string;
   deleted_at: Date | null;
   created_at: Date;
   updated_at: Date;
@@ -22,7 +29,8 @@ export interface ILeagueUsers {
   id: number;
   user_id: number;
   league_id: number;
-  role: LeagueRole;
+  role: string;
+  users: IUsers;
 }
 
 export interface ILeagueMatches {
@@ -93,4 +101,8 @@ export type IApiResponse = {
   data: [] | {} | null;
   type: string;
   message: string;
+};
+
+export type IUsersProps = {
+  userData: IUserLeagues | undefined;
 };

@@ -21,9 +21,7 @@ const PointsTable = () => {
       if (result.type === "success") {
         setTeams(result.data as ITeams[]);
       }
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

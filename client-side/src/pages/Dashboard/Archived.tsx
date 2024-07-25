@@ -2,12 +2,13 @@ import { Helmet } from "react-helmet";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import { useEffect, useState } from "react";
-import { IApiResponse, ILeagues } from "../../types/types";
+import { IApiResponse, ILeagues, IUserLeagues } from "../../types/types";
 import useAxios from "../../hooks/useAxios";
 import ArchivedLeagueCard from "../../components/Archived/ArchivedLeagueCard";
+import { Link } from "react-router-dom";
 
 const Archived = () => {
-  const [archivedLeagues, setArchivedLeagues] = useState<ILeagues[]>();
+  const [archivedLeagues, setArchivedLeagues] = useState<IUserLeagues[]>();
 
   const { callApi } = useAxios();
 
@@ -19,7 +20,7 @@ const Archived = () => {
       params: {},
     });
     if (result.type === "success") {
-      setArchivedLeagues(result.data as ILeagues[]);
+      setArchivedLeagues(result.data as IUserLeagues[]);
     }
   };
 
@@ -40,10 +41,12 @@ const Archived = () => {
             <div className="h-[1px] bg-secondary w-[80%] mx-auto" />
             <div className="flex flex-wrap">
               {archivedLeagues &&
-                archivedLeagues.map((league) => {
+                archivedLeagues.map((league, index) => {
                   return (
-                    <div className="p-[10px] w-[calc(100%/3)]">
-                      <ArchivedLeagueCard data={league} />
+                    <div className="p-[10px] w-[calc(100%/3)]" key={index}>
+                      <Link to={`/league/${league.id}`}>
+                        <ArchivedLeagueCard data={league} />
+                      </Link>
                     </div>
                   );
                 })}

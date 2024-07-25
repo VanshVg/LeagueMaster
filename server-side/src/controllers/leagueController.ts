@@ -141,3 +141,29 @@ export const getArchivedLeagues = async (req: Request, res: Response) => {
     return generalResponse(res, 500, null, "server", "Internal Server Error");
   }
 };
+
+export const getUsers = async (req: Request, res: Response) => {
+  try {
+    const { leagueId } = req.params;
+
+    const league: leagues | null = await leagueRepository.getFirst({
+      id: Number(leagueId),
+      deleted_at: null,
+    });
+    if (league === null) {
+      return generalResponse(res, 404, null, "not_found", "League not found");
+    }
+
+    const leagueUsers = await leagueRepository.getLeagueUsers(league.id);
+    return generalResponse(
+      res,
+      200,
+      leagueUsers,
+      "success",
+      "Fetched league users data successfully"
+    );
+  } catch (error) {
+    logger.error(error);
+    return generalResponse(res, 500, null, "server", "Internal Server Error");
+  }
+};
