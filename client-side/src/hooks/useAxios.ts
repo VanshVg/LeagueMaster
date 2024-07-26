@@ -16,7 +16,6 @@ const useAxios = () => {
     setIsLoading(true);
     try {
       const result = await axiosInstance({ url, method, data, params });
-      console.log(result);
       if (result.data.type === "success") {
         setIsSuccess(true);
         if (result.data.toast) {

@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { IApiResponse, IError, IUserLeagues } from "../types/types";
 import axios from "axios";
 import { setUserLeagues } from "../redux/reducers/leaguesReducer";
+import { logout } from "../redux/reducers/authReducer";
 
 const Sidebar = () => {
   const isSidebarOpen: boolean = useSelector((state: RootState) => state.sidebar.isSidebarOpen);
@@ -23,7 +24,6 @@ const Sidebar = () => {
   );
 
   const navigate: NavigateFunction = useNavigate();
-  const cookies: Cookies = new Cookies();
   const location = useLocation();
   const dispatch = useDispatch();
 
@@ -59,7 +59,7 @@ const Sidebar = () => {
     }
   }, [userLeagues]);
 
-  const handleLogout = () => {
+  const logoutHandler = () => {
     Swal.fire({
       title: "Logout Confirmation",
       text: "Are sure you want to logout?",
@@ -74,7 +74,7 @@ const Sidebar = () => {
     })
       .then((result) => {
         if (result.isConfirmed) {
-          cookies.remove("token", { path: "/" });
+          dispatch(logout());
           Swal.fire({
             title: "Logout Successful",
             text: "Logout Successful",
@@ -158,7 +158,7 @@ const Sidebar = () => {
           </Link>
           <div
             className="mt-[15px] rounded-[12px] -ml-[10px] py-[2px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
-            onClick={handleLogout}
+            onClick={logoutHandler}
           >
             <img src="/icons/exit.svg" className="ml-[45px]" alt="" />
             <p className="ml-[15px] text-[18px] text-primaryText">Logout</p>
@@ -219,7 +219,7 @@ const Sidebar = () => {
           <Tooltip title="Logout">
             <div
               className="mt-[14px] rounded-[12px] -ml-[10px] py-[4px] cursor-pointer flex duration-300 ease-out hover:bg-lightBg max-w-[95%]"
-              onClick={handleLogout}
+              onClick={logoutHandler}
             >
               <img src="/icons/exit.svg" className="ml-[45px]" alt="exit" />
             </div>

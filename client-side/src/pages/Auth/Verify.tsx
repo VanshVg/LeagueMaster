@@ -2,48 +2,41 @@ import { Helmet } from "react-helmet";
 import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import axios from "axios";
 
 import { SecondaryButton } from "../../components/Buttons/Buttons";
-import { IError } from "../../types/types";
+import { IApiResponse } from "../../types/types";
 import verifySchema from "../../schema/verifySchema";
 import Input from "../../components/Form/Input";
+import useAuthServices from "../../hooks/services/authServices";
+import { SUCCESS_TYPE, routes } from "../../types/constants";
 
 const Verify = () => {
   const initialData = {
     username: "",
   };
 
-  const [verifyError, setVerifyError] = useState<IError>({ type: "", message: "" });
   const [resetToken, setResetToken] = useState<string>("");
 
   const navigate = useNavigate();
+
+  const { verifyUsernameApi } = useAuthServices();
 
   const { errors, values, handleBlur, handleChange, touched, submitForm } = useFormik({
     initialValues: initialData,
     validationSchema: verifySchema,
     onSubmit: async (values) => {
-      try {
-        const response = await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/auth/verify`,
-          values
-        );
-        if (response.data.type === "success") {
-          setResetToken(response.data.data.resetToken);
-        }
-      } catch (error: any) {
-        setVerifyError({ type: error.response.data.type, message: error.response.data.message });
+      const result: IApiResponse = await verifyUsernameApi(values);
+      if (result?.type === SUCCESS_TYPE) {
+        setResetToken(result?.data?.resetToken);
       }
     },
   });
 
-  const handleInputChange = (e: ChangeEvent): void => {
-    setVerifyError({ type: "", message: "" });
+  const inputChangeHandler = (e: ChangeEvent): void => {
     handleChange(e);
   };
 
-  const handleSubmit = (): void => {
-    setVerifyError({ type: "", message: "" });
+  const submitHandler = (): void => {
     submitForm();
   };
 
@@ -68,34 +61,29 @@ const Verify = () => {
                 type="text"
                 id="username"
                 value={values.username}
-                onChange={handleInputChange}
+                onChange={inputChangeHandler}
                 onBlur={handleBlur}
                 label="Username"
                 errors={errors.username}
                 touched={touched.username}
               />
-              {verifyError.type !== "" && (
-                <p className="-mb-[12px] mt-[2px] text-left text-[15px] text-red ml-[2px]">
-                  {verifyError.message}
-                </p>
-              )}
               {resetToken !== "" && (
                 <p
-                  className="text-link hover:underline cursor-pointer"
-                  onClick={() => navigate(`/auth/reset/${resetToken}`)}
+                  className="text-link hover:underline cursor-pointer -ml-[30px]"
+                  onClick={() => navigate(`${routes.RESET_PASSWORD}/${resetToken}`)}
                 >
-                  {`http://192.168.18.45:3000/auth/reset/${resetToken}`}
+                  {`${process.env.REACT_APP_FRONTEND_URL}${routes.RESET_PASSWORD}/${resetToken}`}
                 </p>
               )}
             </div>
             <div className="max-w-[77%] mx-auto flex justify-center mt-[40px]">
-              <div onClick={handleSubmit}>
+              <div onClick={submitHandler}>
                 <SecondaryButton name={"Verify"} />
               </div>
             </div>
             <p className="mt-[40px] text-secondary">
               Back to login?{" "}
-              <Link to={"/auth/login"} className="text-link hover:underline">
+              <Link to={routes.LOGIN} className="text-link hover:underline">
                 Login
               </Link>
             </p>

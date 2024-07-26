@@ -8,6 +8,7 @@ import { SecondaryButton } from "../../components/Buttons/Buttons";
 import { IApiResponse } from "../../types/types";
 import Input from "../../components/Form/Input";
 import useAuthServices from "../../hooks/services/authServices";
+import { SUCCESS_TYPE, routes } from "../../types/constants";
 
 const Register = () => {
   const initialData = {
@@ -26,17 +27,17 @@ const Register = () => {
     validationSchema: registerSchema,
     onSubmit: async (values) => {
       const result: IApiResponse = await registerApi(values);
-      if (result.type === "success") {
-        setActivationCode(result.data!.verificationToken);
+      if (result?.type === SUCCESS_TYPE) {
+        setActivationCode(result?.data?.verificationToken);
       }
     },
   });
 
-  const handleInputChange = (e: ChangeEvent): void => {
+  const inputChangeHandler = (e: ChangeEvent): void => {
     handleChange(e);
   };
 
-  const handleSubmit = (): void => {
+  const submitHandler = (): void => {
     submitForm();
   };
 
@@ -61,7 +62,7 @@ const Register = () => {
                 type="text"
                 id="username"
                 value={values.username}
-                onChange={handleInputChange}
+                onChange={inputChangeHandler}
                 onBlur={handleBlur}
                 label="Username"
                 errors={errors.username}
@@ -73,7 +74,7 @@ const Register = () => {
                 type="password"
                 id="password"
                 value={values.password}
-                onChange={handleInputChange}
+                onChange={inputChangeHandler}
                 onBlur={handleBlur}
                 label="Password"
                 errors={errors.password}
@@ -85,7 +86,7 @@ const Register = () => {
                 type="password"
                 id="confirmPassword"
                 value={values.confirmPassword}
-                onChange={handleInputChange}
+                onChange={inputChangeHandler}
                 onBlur={handleBlur}
                 label="Confirm Password"
                 errors={errors.confirmPassword}
@@ -94,14 +95,14 @@ const Register = () => {
               {activationCode !== "" && (
                 <p
                   className="text-link mt-[10px] cursor-pointer"
-                  onClick={() => navigate(`/auth/activate/${activationCode}`)}
+                  onClick={() => navigate(`${routes.ACTIVATE}/${activationCode}`)}
                 >
-                  {`http://192.168.18.45:3000/auth/activate/` + activationCode}
+                  {`${process.env.REACT_APP_FRONTEND_URL}${routes.ACTIVATE}/` + activationCode}
                 </p>
               )}
             </div>
             <div className="max-w-[77%] mx-auto flex justify-center mt-[40px]">
-              <div onClick={handleSubmit}>
+              <div onClick={submitHandler}>
                 <SecondaryButton name={"Register"} />
               </div>
             </div>
@@ -110,7 +111,7 @@ const Register = () => {
             Already have an account?{" "}
             <span
               className="text-link hover:underline cursor-pointer"
-              onClick={() => navigate("/auth/login")}
+              onClick={() => navigate(routes.LOGIN)}
             >
               Login
             </span>

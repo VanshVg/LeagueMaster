@@ -134,3 +134,12 @@ export type ILoginApiData = {
   username: string;
   password: string;
 };
+
+export type IVerifyUsernameApiData = {
+  username: string;
+};
+
+export type IResetPasswordApiData = {
+  password: string;
+  confirmPassword: string;
+};

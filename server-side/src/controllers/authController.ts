@@ -83,12 +83,13 @@ export const activateAccount = async (req: Request, res: Response) => {
         403,
         null,
         "unauthorised",
-        "User isn't authorised to access this page"
+        "User isn't authorised to access this page",
+        true
       );
     }
 
     if (isUser.is_active) {
-      return generalResponse(res, 409, null, "conflict", "Account is already activated");
+      return generalResponse(res, 409, null, "conflict", "Account is already activated", true);
     }
 
     const { created_at } = isUser;
@@ -100,12 +101,13 @@ export const activateAccount = async (req: Request, res: Response) => {
         403,
         null,
         "unauthorised",
-        "Token is expired. Please register again."
+        "Token is expired. Please register again.",
+        true
       );
     }
 
     await userRepository.updateById(isUser.id, { is_active: true });
-    return generalResponse(res, 200, null, "success", "Account activation successful");
+    return generalResponse(res, 200, null, "success", "Account activation successful", true);
   } catch (error) {
     logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
@@ -116,7 +118,7 @@ export const login = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 400, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload", true);
     }
 
     const { username, password } = req.body;
@@ -127,19 +129,19 @@ export const login = async (req: Request, res: Response) => {
       deleted_at: null,
     });
     if (isUser === null) {
-      return generalResponse(res, 403, null, "credentials", "Invalid Credentials");
+      return generalResponse(res, 403, null, "credentials", "Invalid Credentials", true);
     }
 
     if (!(await argon2.verify(isUser.password, password))) {
-      return generalResponse(res, 403, null, "credentials", "Invalid Credentials");
+      return generalResponse(res, 403, null, "credentials", "Invalid Credentials", true);
     }
 
     if (!isUser.is_active) {
-      return generalResponse(res, 403, null, "inactive", "Account isn't activated");
+      return generalResponse(res, 403, null, "inactive", "Account isn't activated", true);
     }
 
     const token: string = generateToken(username);
-    return generalResponse(res, 200, { token: token }, "success", "User login successful");
+    return generalResponse(res, 200, { token: token }, "success", "User login successful", true);
   } catch (error) {
     logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");
@@ -150,7 +152,7 @@ export const verify = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 400, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload", true);
     }
 
     const { username } = req.body;
@@ -160,11 +162,11 @@ export const verify = async (req: Request, res: Response) => {
     });
 
     if (isUser === null) {
-      return generalResponse(res, 403, null, "username", "Invalid username");
+      return generalResponse(res, 403, null, "username", "Invalid username", true);
     }
 
     if (!isUser.is_active) {
-      return generalResponse(res, 403, null, "conflict", "Account isn't activated");
+      return generalResponse(res, 403, null, "conflict", "Account isn't activated", true);
     }
 
     const resetToken = randomString.generate({
@@ -185,7 +187,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   try {
     const errors: Result<ValidationError> = validationResult(req);
     if (!errors.isEmpty()) {
-      return generalResponse(res, 400, null, "payload", "Invalid Payload");
+      return generalResponse(res, 400, null, "payload", "Invalid Payload", true);
     }
 
     const { token } = req.params;
@@ -216,13 +218,14 @@ export const resetPassword = async (req: Request, res: Response) => {
         403,
         null,
         "unauthorised",
-        "Token is expired. Please register again."
+        "Token is expired. Please register again.",
+        true
       );
     }
     const hashedPassword: string = await argon2.hash(password);
     await userRepository.updateById(isUser.id, { password: hashedPassword, reset_token: null });
 
-    return generalResponse(res, 200, null, "success", "Password reset successful");
+    return generalResponse(res, 200, null, "success", "Password reset successful", true);
   } catch (error) {
     logger.error(error);
     return generalResponse(res, 500, null, "server", "Internal server error");

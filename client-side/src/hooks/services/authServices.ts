@@ -1,18 +1,49 @@
-import { ILoginApiData, IRegisterApiData } from "../../types/types";
+import {
+  ILoginApiData,
+  IRegisterApiData,
+  IResetPasswordApiData,
+  IVerifyUsernameApiData,
+} from "../../types/types";
 import useAxios from "../useAxios";
 
 const useAuthServices = () => {
   const { callApi, isSuccess, isError, isLoading } = useAxios();
 
   const registerApi = async (values: IRegisterApiData) => {
-    return await callApi({ url: "/auth/register", method: "POST", data: values, params: {} });
+    return callApi({ url: "/auth/register", method: "POST", data: values, params: {} });
   };
 
   const loginApi = async (values: ILoginApiData) => {
-    return await callApi({ url: "/auth/login", method: "POST", data: values, params: {} });
+    return callApi({ url: "/auth/login", method: "POST", data: values, params: {} });
   };
 
-  return { registerApi, loginApi, isSuccess, isError, isLoading };
+  const activateApi = (verificationToken: string) => {
+    return callApi({
+      url: `/auth/activate/${verificationToken}`,
+      method: "PUT",
+      data: {},
+      params: {},
+    });
+  };
+
+  const verifyUsernameApi = async (values: IVerifyUsernameApiData) => {
+    return callApi({ url: "/auth/verify", method: "POST", data: values, params: {} });
+  };
+
+  const resetPasswordApi = async (values: IResetPasswordApiData, resetToken: string) => {
+    return callApi({ url: `/auth/reset/${resetToken}`, method: "PUT", data: values, params: {} });
+  };
+
+  return {
+    registerApi,
+    loginApi,
+    activateApi,
+    verifyUsernameApi,
+    resetPasswordApi,
+    isSuccess,
+    isError,
+    isLoading,
+  };
 };
 
 export default useAuthServices;
