@@ -1,12 +1,12 @@
+import { useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
-import Cookies, { Cookie } from "universal-cookie";
+import { RootState } from "../../redux/store";
+import { routes } from "../../types/constants";
 
 const AuthRoutes = () => {
-  const cookies: Cookie = new Cookies();
+  const access_token = useSelector((state: RootState) => state.auth.access_token);
 
-  const token: string = cookies.get("access_token");
-
-  return token ? <Navigate to={"/dashboard"} /> : <Outlet />;
+  return access_token ? <Navigate to={routes.DASHBOARD} /> : <Outlet />;
 };
 
 export default AuthRoutes;

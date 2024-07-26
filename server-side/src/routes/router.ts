@@ -1,10 +1,10 @@
 import express, { Router } from "express";
 import passport from "passport";
 
-import authRoutes from "./authRouter";
-import leagueRoutes from "./leagueRouter";
+import authRoutes from "./authRoutes";
+import leagueRoutes from "./leagueRoutes";
 import userRoutes from "./userRouter";
-import matchRoutes from "./matchRouter";
+import matchRoutes from "./matchRoutes";
 import teamRoutes from "./teamRoutes";
 import { applyPassportStrategy } from "../middlewares/passport";
 
@@ -15,7 +15,7 @@ const auth = passport.authenticate("jwt", { session: false, failureRedirect: "/l
 const router: Router = express.Router();
 
 router.use("/auth", authRoutes);
-router.use("/league", auth, leagueRoutes);
+router.use("/leagues", auth, leagueRoutes);
 router.use("/user", auth, userRoutes);
 router.use("/matches", auth, matchRoutes);
 router.use("/teams", auth, teamRoutes);

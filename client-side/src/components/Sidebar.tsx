@@ -12,6 +12,8 @@ import { IApiResponse, IError, IUserLeagues } from "../types/types";
 import axios from "axios";
 import { setUserLeagues } from "../redux/reducers/leaguesReducer";
 import { logout } from "../redux/reducers/authReducer";
+import useLeagueServices from "../hooks/services/leagueServices";
+import { routes } from "../types/constants";
 
 const Sidebar = () => {
   const isSidebarOpen: boolean = useSelector((state: RootState) => state.sidebar.isSidebarOpen);
@@ -27,27 +29,13 @@ const Sidebar = () => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const { callApi } = useAxios();
+  const { fetchUserLeaguesApi } = useLeagueServices();
 
   const fetchUserLeagues = async () => {
-    try {
-      const response: IApiResponse = await callApi({
-        url: `/league/leagues`,
-        method: "GET",
-        data: {},
-        params: {},
-      });
-      if (response.type === "success") {
-        dispatch(setUserLeagues(response.data));
-        setLeagues(response.data as IUserLeagues[]);
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        setUserLeaguesError({
-          type: error?.response?.data.type,
-          message: error?.response?.data.message,
-        });
-      }
+    const response: IApiResponse = await fetchUserLeaguesApi();
+    if (response.type === "success") {
+      dispatch(setUserLeagues(response.data));
+      setLeagues(response.data as IUserLeagues[]);
     }
   };
 
@@ -71,24 +59,20 @@ const Sidebar = () => {
       confirmButtonColor: "#2554c7",
       color: "#28183b",
       showLoaderOnConfirm: true,
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          dispatch(logout());
-          Swal.fire({
-            title: "Logout Successful",
-            text: "Logout Successful",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 2000,
-          }).then(() => {
-            navigate("/");
-          });
-        }
-      })
-      .catch(() => {
-        navigate("/*");
-      });
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(logout());
+        Swal.fire({
+          title: "Logout Successful",
+          text: "Logout Successful",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
+        }).then(() => {
+          navigate(routes.LANDING);
+        });
+      }
+    });
   };
 
   const leagueHandler = () => {
@@ -99,10 +83,10 @@ const Sidebar = () => {
     <>
       {isSidebarOpen ? (
         <div className="h-screen duration-300 ease-in shadow-[1px_1px_1px_1px_gray] w-[23%] pt-[15px] pb-[110px] overflow-y-auto font-poppins">
-          <Link to={"/dashboard"}>
+          <Link to={routes.DASHBOARD}>
             <div
               className={`${
-                location.pathname === "/dashboard"
+                location.pathname === routes.DASHBOARD
                   ? "mt-[5px] rounded-[12px] -ml-[10px] py-[2px] cursor-pointer flex max-w-[95%] bg-skyBlue"
                   : "mt-[5px] rounded-[12px] duration-300 ease-out -ml-[10px] py-[2px] cursor-pointer flex hover:bg-lightBg max-w-[95%]"
               }`}

@@ -5,9 +5,9 @@ import { joinLeagueValidator, leagueValidator } from "../validators/LeagueValida
 
 const router: Router = express.Router();
 
-router.post("/create", leagueValidator, leagueController.createLeague);
+router.post("/", leagueValidator, leagueController.createLeague);
 router.get("/types", leagueController.getLeagueTypes);
-router.get("/leagues", leagueController.getUserLeagues);
+router.get("/", leagueController.getUserLeagues);
 router.put("/join", joinLeagueValidator, leagueController.joinLeague);
 router.get("/archived", leagueController.getArchivedLeagues);
 router.get("/:leagueId", leagueController.getOneLeague);
